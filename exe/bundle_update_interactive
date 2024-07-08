@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "bundle_update_interactive"
+BundleUpdateInteractive::CLI.start(ARGV)
