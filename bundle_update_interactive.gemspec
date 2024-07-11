@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Matt Brictson"]
   spec.email = ["opensource@mattbrictson.com"]
 
-  spec.summary = "Adds a update-interactive command to Bundler"
+  spec.summary = "Adds an update-interactive command to Bundler"
   spec.homepage = "https://github.com/mattbrictson/bundle_update_interactive"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7"
