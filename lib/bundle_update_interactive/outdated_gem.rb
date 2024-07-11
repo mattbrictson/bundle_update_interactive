@@ -10,6 +10,7 @@ module BundleUpdateInteractive
       @updated_lockfile_entry = updated_lockfile_entry
       @gemfile_groups = gemfile_groups
       @changelog_locator = ChangelogLocator.new
+      @vulnerable = nil
     end
 
     def name
