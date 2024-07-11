@@ -50,7 +50,7 @@ class BundleUpdateInteractive::CLI
 
         if given_args.first == "help"
           retry_with_args = ["help"] if given_args.length > 1
-        elsif e.unknown.intersect?(%w[-h --help])
+        elsif (e.unknown & %w[-h --help]).any?
           retry_with_args = ["help", (given_args - e.unknown).first]
         end
         raise unless retry_with_args.any?
