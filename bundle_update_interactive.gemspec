@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "lib/bundle_update_interactive/version"
 
 Gem::Specification.new do |spec|
@@ -6,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors = ["Matt Brictson"]
   spec.email = ["opensource@mattbrictson.com"]
 
-  spec.summary = "TODO"
+  spec.summary = "Adds a update-interactive command to Bundler"
   spec.homepage = "https://github.com/mattbrictson/bundle_update_interactive"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1"
+  spec.required_ruby_version = ">= 2.7"
 
   spec.metadata = {
     "bug_tracker_uri" => "https://github.com/mattbrictson/bundle_update_interactive/issues",
@@ -26,5 +28,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Runtime dependencies
+  spec.add_dependency "bundler", "~> 2.0"
+  spec.add_dependency "bundler-audit", ">= 0.9.1"
+  spec.add_dependency "faraday", ">= 2.8.0"
+  spec.add_dependency "pastel", ">= 0.8.0"
   spec.add_dependency "thor", "~> 1.2"
+  spec.add_dependency "tty-prompt", ">= 0.23.1"
+  spec.add_dependency "tty-screen", ">= 0.8.2"
 end

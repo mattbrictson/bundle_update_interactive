@@ -8,7 +8,7 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   NewCops: enable
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 2.7
   Exclude:
     - "tmp/**/*"
     - "vendor/**/*"
@@ -95,9 +95,6 @@ Style/DoubleNegation:
   Enabled: false
 
 Style/EmptyMethod:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/NumericPredicate:

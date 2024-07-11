@@ -1,4 +1,6 @@
-module BundleUpdateInteractive
+# frozen_string_literal: true
+
+class BundleUpdateInteractive::CLI
   module ThorExt
     # Configures Thor to behave more like a typical CLI, with better help and error handling.
     #
@@ -33,7 +35,7 @@ module BundleUpdateInteractive
         handle_help_switches(given_args) do |args|
           dispatch(nil, args, nil, config)
         end
-      rescue StandardError => e
+      rescue Exception => e # rubocop:disable Lint/RescueException
         handle_exception_on_start(e, config)
       end
 
@@ -55,14 +57,17 @@ module BundleUpdateInteractive
       end
 
       def handle_exception_on_start(error, config)
-        return if error.is_a?(Errno::EPIPE)
-        raise if ENV["VERBOSE"] || !config.fetch(:exit_on_failure, true)
+        case error
+        when Errno::EPIPE
+          # Ignore
+        when Thor::Error, Interrupt
+          raise unless config.fetch(:exit_on_failure, true)
 
-        message = error.message.to_s
-        message.prepend("[#{error.class}] ") if message.empty? || !error.is_a?(Thor::Error)
-
-        config[:shell]&.say_error(message, :red)
-        exit(false)
+          config[:shell]&.say_error(error.message, :red)
+          exit(false)
+        else
+          raise
+        end
       end
     end
   end

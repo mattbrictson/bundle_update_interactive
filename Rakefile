@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bundler/gem_tasks"
 require "rake/testtask"
 require "rubocop/rake_task"
@@ -65,9 +67,8 @@ namespace :bump do
   end
 end
 
-require "date"
+require "json"
 require "open-uri"
-require "yaml"
 
 def replace_in_file(path, replacements)
   contents = File.read(path)
@@ -90,17 +91,16 @@ module RubyVersions
     end
 
     def all
-      patches = versions.values_at(:stable, :security_maintenance).compact.flatten
-      sorted_minor_versions = patches.map { |p| p[/\d+\.\d+/] }.sort_by(&:to_f)
-      [*sorted_minor_versions, "head"]
+      minor_versions = versions.filter_map { |v| v["cycle"] if v["releaseDate"] >= "2019-12-25" }
+      [*minor_versions.sort, "head"]
     end
 
     private
 
     def versions
       @_versions ||= begin
-        yaml = URI.open("https://raw.githubusercontent.com/ruby/www.ruby-lang.org/HEAD/_data/downloads.yml")
-        YAML.safe_load(yaml, symbolize_names: true)
+        json = URI.open("https://endoflife.date/api/ruby.json").read
+        JSON.parse(json)
       end
     end
   end
