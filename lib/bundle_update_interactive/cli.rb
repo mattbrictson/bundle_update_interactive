@@ -34,7 +34,7 @@ module BundleUpdateInteractive
       say
       say Table.new(selected_gems).render
       say
-      BundlerCommands.update_gems_conservatively(*selected_gems.keys)
+      report.bundle_update!(*selected_gems.keys)
     end
 
     private
