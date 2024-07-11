@@ -5,7 +5,9 @@
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mattbrictson/bundle_update_interactive/ci.yml)](https://github.com/mattbrictson/bundle_update_interactive/actions/workflows/ci.yml)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mattbrictson/bundle_update_interactive)](https://codeclimate.com/github/mattbrictson/bundle_update_interactive)
 
-TODO: Description of this gem goes here.
+This gem adds an `update-interactive` command to [Bundler](https://bundler.io).
+
+https://github.com/user-attachments/assets/3ec11073-b365-4f92-be76-60c9ac73d1be
 
 ---
 
@@ -17,12 +19,22 @@ TODO: Description of this gem goes here.
 
 ## Quick start
 
+Install the gem:
+
 ```
 gem install bundle_update_interactive
 ```
 
-```ruby
-require "bundle_update_interactive"
+Now you can use:
+
+```
+bundle update-interactive
+```
+
+Or the shorthand:
+
+```
+bundle ui
 ```
 
 ## Support
