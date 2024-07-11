@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "pastel"
+
 module BundleUpdateInteractive
   autoload :BundlerCommands, "bundle_update_interactive/bundler_commands"
   autoload :ChangelogLocator, "bundle_update_interactive/changelog_locator"
@@ -11,4 +13,10 @@ module BundleUpdateInteractive
   autoload :Report, "bundle_update_interactive/report"
   autoload :SemverChange, "bundle_update_interactive/semver_change"
   autoload :VERSION, "bundle_update_interactive/version"
+
+  class << self
+    attr_accessor :pastel
+  end
+
+  self.pastel = Pastel.new
 end

@@ -2,7 +2,6 @@
 
 require "bundler/gem_tasks"
 require "rake/testtask"
-require "rubocop/rake_task"
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
@@ -10,9 +9,13 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList["test/**/*_test.rb"]
 end
 
-RuboCop::RakeTask.new
-
-task default: %i[test rubocop]
+if Gem.loaded_specs.key?("rubocop")
+  require "rubocop/rake_task"
+  RuboCop::RakeTask.new
+  task default: %i[test rubocop]
+else
+  task default: :test # rubocop:disable Rake/DuplicateTask
+end
 
 # == "rake release" enhancements ==============================================
 

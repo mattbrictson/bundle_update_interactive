@@ -13,7 +13,7 @@ class BundleUpdateInteractive::CLI
 
     def initialize(outdated_gem)
       super
-      @pastel = Pastel.new
+      @pastel = BundleUpdateInteractive.pastel
     end
 
     def to_a

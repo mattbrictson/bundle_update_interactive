@@ -7,7 +7,7 @@ class BundleUpdateInteractive::CLI
     HEADERS = ["name", "from", nil, "to", "group", "url"].freeze
 
     def initialize(outdated_gems)
-      @pastel = Pastel.new
+      @pastel = BundleUpdateInteractive.pastel
       @headers = HEADERS.map { |h| pastel.dim.underline(h) }
       @rows = outdated_gems.transform_values { |gem| Row.new(gem).to_a.map(&:to_s) }
       @column_widths = calculate_column_widths

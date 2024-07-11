@@ -10,6 +10,8 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
   Exclude:
+    - "bin/*"
+    - "test/fixtures/**/*"
     - "tmp/**/*"
     - "vendor/**/*"
 

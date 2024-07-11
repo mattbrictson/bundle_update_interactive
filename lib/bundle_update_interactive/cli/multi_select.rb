@@ -39,7 +39,7 @@ class BundleUpdateInteractive::CLI
           exit(130)
         }
       )
-      @pastel = Pastel.new
+      @pastel = BundleUpdateInteractive.pastel
     end
 
     def prompt
