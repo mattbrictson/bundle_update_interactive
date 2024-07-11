@@ -55,7 +55,7 @@ module BundleUpdateInteractive
       vulnerable_gem_names = Set.new(audit_report.vulnerable_gems.map(&:name))
 
       outdated_gems.each do |name, gem|
-        gem.vulnerable = vulnerable_gem_names.intersect?([name, *current_lockfile[name].exact_dependencies])
+        gem.vulnerable = (vulnerable_gem_names & [name, *current_lockfile[name].exact_dependencies]).any?
       end
       true
     end
