@@ -20,10 +20,13 @@ module BundleUpdateInteractive
     end
 
     desc "ui", "Update Gemfile.lock interactively", hide: true
-    def ui
+    def ui # rubocop:disable Metrics/AbcSize
       report = generate_report
       say("No gems to update.") && return if report.updateable_gems.empty?
 
+      say
+      say legend
+      say
       selected_gems = MultiSelect.prompt_for_gems_to_update(report.updateable_gems)
       say("No gems to update.") && return if selected_gems.empty?
 
@@ -35,6 +38,18 @@ module BundleUpdateInteractive
     end
 
     private
+
+    def legend
+      pastel = BundleUpdateInteractive.pastel
+      <<~LEGEND
+        Color legend:
+        #{pastel.white.on_red('<inverse>')} Known security vulnerability
+        #{pastel.red('<red>')}     Major update; likely to have breaking changes, high risk
+        #{pastel.yellow('<yellow>')}  Minor update; changes and additions, moderate risk
+        #{pastel.green('<green>')}   Patch update; bug fixes, low risk
+        #{pastel.cyan('<cyan>')}    Possibly unreleased git commits; unknown risk
+      LEGEND
+    end
 
     def generate_report
       whisper "Resolving latest gem versions..."
