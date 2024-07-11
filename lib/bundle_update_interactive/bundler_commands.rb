@@ -10,7 +10,9 @@ module BundleUpdateInteractive
       end
 
       def read_updated_lockfile
-        `bundle lock --print --update`
+        `bundle lock --print --update`.tap do
+          raise "bundle lock command failed" unless Process.last_status.success?
+        end
       end
     end
   end

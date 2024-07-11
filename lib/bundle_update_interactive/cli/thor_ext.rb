@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bundler"
+
 class BundleUpdateInteractive::CLI
   module ThorExt
     # Configures Thor to behave more like a typical CLI, with better help and error handling.
@@ -60,7 +62,7 @@ class BundleUpdateInteractive::CLI
         case error
         when Errno::EPIPE
           # Ignore
-        when Thor::Error, Interrupt
+        when Thor::Error, Interrupt, Bundler::Dsl::DSLError
           raise unless config.fetch(:exit_on_failure, true)
 
           config[:shell]&.say_error(error.message, :red)
