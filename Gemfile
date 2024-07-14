@@ -3,6 +3,7 @@
 source "https://rubygems.org"
 gemspec
 
+gem "factory_bot", "~> 6.3.0"
 gem "minitest", "~> 5.11"
 gem "minitest-snapshots", "~> 1.1"
 gem "mocha", "~> 2.4"
