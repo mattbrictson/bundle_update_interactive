@@ -7,6 +7,7 @@ gem "factory_bot", "~> 6.3.0"
 gem "minitest", "~> 5.11"
 gem "minitest-snapshots", "~> 1.1"
 gem "mocha", "~> 2.4"
+gem "observer"
 gem "rake", "~> 13.0"
 
 if RUBY_VERSION >= "3.3"
