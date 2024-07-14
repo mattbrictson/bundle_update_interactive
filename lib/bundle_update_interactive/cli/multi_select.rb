@@ -39,6 +39,8 @@ class BundleUpdateInteractive::CLI
           exit(130)
         }
       )
+      add_keybindings
+
       @pastel = BundleUpdateInteractive.pastel
     end
 
@@ -50,6 +52,13 @@ class BundleUpdateInteractive::CLI
     private
 
     attr_reader :pastel, :table, :tty_prompt, :title
+
+    def add_keybindings
+      tty_prompt.on(:keypress) do |event|
+        tty_prompt.trigger(:keyup) if %w[k p].include?(event.value)
+        tty_prompt.trigger(:keydown) if %w[j n].include?(event.value)
+      end
+    end
 
     def help
       [
