@@ -21,16 +21,12 @@ module BundleUpdateInteractive
 
     def initialize(gemfile:, current_lockfile:, updated_lockfile:)
       @current_lockfile = current_lockfile
-      outdated_names = current_lockfile.entries.each_with_object([]) do |current_entry, arr|
-        updated_entry = updated_lockfile[current_entry.name]
-        arr << current_entry.name if current_entry.older_than?(updated_entry)
-      end
-      @outdated_gems ||= outdated_names.sort.each_with_object({}) do |name, hash|
-        hash[name] = OutdatedGem.new(
-          current_lockfile_entry: current_lockfile[name],
-          updated_lockfile_entry: updated_lockfile[name],
-          gemfile_groups: gemfile[name]&.groups
-        )
+      @outdated_gems ||= current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
+        name = current_lockfile_entry.name
+        updated_lockfile_entry = updated_lockfile[name]
+        next unless current_lockfile_entry.older_than?(updated_lockfile_entry)
+
+        hash[name] = build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile[name]&.groups)
       end.freeze
     end
 
@@ -39,12 +35,14 @@ module BundleUpdateInteractive
     end
 
     def updateable_gems
-      outdated_gems.reject { |_, gem| gem.current_lockfile_entry.exact_dependency? }
+      @updateable_gems ||= outdated_gems.reject do |name, _|
+        current_lockfile[name].exact_dependency?
+      end.freeze
     end
 
     def expand_gems_with_exact_dependencies(*gem_names)
       gem_names.flatten!
-      gem_names.flat_map { [_1, *outdated_gems[_1].current_lockfile_entry.exact_dependencies] }.uniq
+      gem_names.flat_map { |name| [name, *current_lockfile[name].exact_dependencies] }.uniq
     end
 
     def scan_for_vulnerabilities!
@@ -68,5 +66,18 @@ module BundleUpdateInteractive
     private
 
     attr_reader :current_lockfile
+
+    def build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile_groups)
+      OutdatedGem.new(
+        name: current_lockfile_entry.name,
+        gemfile_groups: gemfile_groups,
+        rubygems_source: updated_lockfile_entry.rubygems_source?,
+        git_source_uri: updated_lockfile_entry.git_source_uri&.to_s,
+        current_version: current_lockfile_entry.version.to_s,
+        current_git_version: current_lockfile_entry.git_version&.strip,
+        updated_version: updated_lockfile_entry.version.to_s,
+        updated_git_version: updated_lockfile_entry.git_version&.strip
+      )
+    end
   end
 end
