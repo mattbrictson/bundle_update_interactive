@@ -75,6 +75,9 @@ Metrics/ParameterLists:
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
 
+Minitest/MultipleAssertions:
+  Max: 6
+
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
