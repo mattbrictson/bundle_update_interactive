@@ -28,7 +28,7 @@ class BundleUpdateInteractive::CLI
 
     def render
       lines = [render_header]
-      rows.each_key { |name| lines << render_gem(name) }
+      rows.keys.sort.each { |name| lines << render_gem(name) }
       lines.join("\n")
     end
 
