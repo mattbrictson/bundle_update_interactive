@@ -35,7 +35,7 @@ module BundleUpdateInteractive
       return @changelog_uri if defined?(@changelog_uri)
 
       @changelog_uri =
-        if git_version_changed?
+        if git_version_changed? && github_repo
           "https://github.com/#{github_repo}/compare/#{current_git_version}...#{updated_git_version}"
         elsif rubygems_source?
           changelog_locator.find_changelog_uri(name: name, version: updated_version.to_s)
