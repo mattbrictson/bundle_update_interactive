@@ -51,7 +51,7 @@ Gems sourced from Git repositories are highlighted in cyan, regardless of the se
 
 `bundle update-interactive` also highlights the exact portion of the version number that has changed, so you can quickly scan gem version for important differences.
 
-![Screenshot of highlighted version numbers](./images/version-highlight.png)
+<img src="images/version-highlight.png" alt="Screenshot of highlighted version numbers" width="70" />
 
 ### Security vulnerabilities
 
