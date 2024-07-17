@@ -5,8 +5,8 @@ require "json"
 
 GITHUB_PATTERN = %r{^(?:https?://)?github\.com/([^/]+/[^/]+)(?:\.git)?/?}.freeze
 URI_KEYS = %w[source_code_uri homepage_uri bug_tracker_uri wiki_uri].freeze
-FILE_PATTERN = /(?:changelog|changes|history|news|release)/.freeze
-EXT_PATTERN = /(?:md|txt|rdoc)/.freeze
+FILE_PATTERN = /changelog|changes|history|news|release/i.freeze
+EXT_PATTERN = /md|txt|rdoc/i.freeze
 
 module BundleUpdateInteractive
   class ChangelogLocator
