@@ -49,7 +49,7 @@ bundle ui
 
 Gems sourced from Git repositories are highlighted in cyan, regardless of the semver change, due to the fact that new commits pulled from the Git repo may not yet be officially released. In this case the semver information is unknown.
 
-`bundle update-interactive` also highlights the exact portion of the version number that has changed, so you can quickly scan gem version for important differences.
+`bundle update-interactive` also highlights the exact portion of the version number that has changed, so you can quickly scan gem versions for important differences.
 
 <img src="images/version-highlight.png" alt="Screenshot of highlighted version numbers" width="70" />
 
