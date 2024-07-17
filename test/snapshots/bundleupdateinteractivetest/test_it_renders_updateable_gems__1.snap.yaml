@@ -13,11 +13,11 @@
   \             1.0.2    →  1.0.\e[32m4\e[0m                         \e[34mhttps://github.com/rails/marcel/releases\e[0m\n\e[33mminitest\e[0m
   \           5.21.2   →  5.\e[33m24.1\e[0m                        \e[34mhttps://github.com/minitest/minitest/blob/master/History.rdoc\e[0m\n\e[32mnet-imap\e[0m
   \           0.4.9.1  →  0.4.\e[32m14\e[0m                        \e[34mhttps://github.com/ruby/net-imap/releases\e[0m\n\e[33mnet-smtp\e[0m
-  \           0.4.0.1  →  0.\e[33m5.0\e[0m                         \e[34mhttps://github.com/ruby/net-smtp/releases\e[0m\n\e[32mnio4r\e[0m
+  \           0.4.0.1  →  0.\e[33m5.0\e[0m                         \e[34mhttps://github.com/ruby/net-smtp/blob/master/NEWS.md\e[0m\n\e[32mnio4r\e[0m
   \              2.7.0    →  2.7.\e[32m3\e[0m                         \e[34mhttps://github.com/socketry/nio4r/blob/main/changes.md\e[0m\n\e[32mnokogiri\e[0m
   \           1.16.2   →  1.16.\e[32m6\e[0m                        \e[34mhttps://nokogiri.org/CHANGELOG.html\e[0m\n\e[31mpublic_suffix\e[0m
   \      5.0.4    →  \e[31m6.0.0\e[0m                         \e[34mhttps://github.com/weppos/publicsuffix-ruby/blob/master/CHANGELOG.md\e[0m\n\e[33mracc\e[0m
-  \               1.7.3    →  1.\e[33m8.0\e[0m                         \e[34mhttps://github.com/ruby/racc/releases\e[0m\n\e[33mrack\e[0m
+  \               1.7.3    →  1.\e[33m8.0\e[0m                         \e[34mhttps://github.com/ruby/racc/blob/master/ChangeLog\e[0m\n\e[33mrack\e[0m
   \               3.0.8    →  3.\e[33m1.7\e[0m                         \e[34mhttps://github.com/rack/rack/blob/main/CHANGELOG.md\e[0m\n\e[32mrails\e[0m
   \              7.1.3    →  7.1.3.\e[32m4\e[0m  :default             \e[34mhttps://github.com/rails/rails/releases/tag/v7.1.3.4\e[0m\n\e[33mrake\e[0m
   \               13.1.0   →  13.\e[33m2.1\e[0m                        \e[34mhttps://github.com/ruby/rake/blob/v13.2.1/History.rdoc\e[0m\n\e[33mrdoc\e[0m
@@ -30,8 +30,8 @@
   \ 4.17.0   →  4.\e[33m22.0\e[0m   :test                \e[34mhttps://github.com/SeleniumHQ/selenium/blob/trunk/rb/CHANGES\e[0m\n\e[33msprockets-rails\e[0m
   \    3.4.2    →  3.\e[33m5.1\e[0m    :default             \e[34mhttps://github.com/rails/sprockets-rails/releases\e[0m\n\e[32msqlite3\e[0m
   \            1.7.2    →  1.7.\e[32m3\e[0m    :default             \e[34mhttps://github.com/sparklemotion/sqlite3-ruby/blob/master/CHANGELOG.md\e[0m\n\e[32mstringio\e[0m
-  \           3.1.0    →  3.1.\e[32m1\e[0m                         \e[34mhttps://github.com/ruby/stringio/releases\e[0m\n\e[32mthor\e[0m
+  \           3.1.0    →  3.1.\e[32m1\e[0m                         \e[34mhttps://github.com/ruby/stringio/blob/master/NEWS.md\e[0m\n\e[32mthor\e[0m
   \               1.3.0    →  1.3.\e[32m1\e[0m                         \e[34mhttps://github.com/rails/thor/releases/tag/v1.3.1\e[0m\n\e[31mturbo-rails\e[0m
   \        1.5.0    →  \e[31m2.0.5\e[0m    :default             \e[34mhttps://github.com/hotwired/turbo-rails/releases\e[0m\n\e[32mwebsocket\e[0m
-  \          1.2.10   →  1.2.\e[32m11\e[0m                        \e[34mhttps://github.com/imanel/websocket-ruby/releases\e[0m\n\e[32mzeitwerk\e[0m
+  \          1.2.10   →  1.2.\e[32m11\e[0m                        \e[34mhttps://github.com/imanel/websocket-ruby/blob/master/CHANGELOG.md\e[0m\n\e[32mzeitwerk\e[0m
   \           2.6.12   →  2.6.\e[32m16\e[0m                        \e[34mhttps://github.com/fxn/zeitwerk/blob/master/CHANGELOG.md\e[0m"
