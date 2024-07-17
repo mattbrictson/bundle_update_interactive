@@ -7,7 +7,7 @@
 
 **This gem adds an `update-interactive` command to [Bundler](https://bundler.io).** Run it to see what gems can be updated, then pick and choose which ones to update. If you've used `yarn upgrade-interactive`, the interface should be very familiar.
 
-![Screenshot of update-interactive UI](./images/update-interactive.png)
+<img src="images/update-interactive.png" alt="Screenshot of update-interactive UI" width="1154" />
 
 ---
 
@@ -45,7 +45,7 @@ bundle ui
 
 `bundle update-interactive` highlights each gem according the severity of its version upgrade.
 
-![Severities are in red, yellow, and green](./images/semver.png)
+<img src="images/semver.png" alt="Severities are in red, yellow, and green" width="480" />
 
 Gems sourced from Git repositories are highlighted in cyan, regardless of the semver change, due to the fact that new commits pulled from the Git repo may not yet be officially released. In this case the semver information is unknown.
 
@@ -57,7 +57,7 @@ Gems sourced from Git repositories are highlighted in cyan, regardless of the se
 
 `bundle update-interactive` uses [bundler-audit](https://github.com/rubysec/bundler-audit) internally to search for outdated gems that have known security vulnerabilities. These gems are highlighted prominently with white text on a red background.
 
-![Screenshot of security vulnerability highlighted in red](./images/security.png)
+<img src="images/security.png" alt="Screenshot of security vulnerability highlighted in red" width="402" />
 
 Some gems, notably `rails`, are composed of smaller gems like `actionpack`, `activesupport`, `railties`, etc. Because of how these component gem versions are constrained, you cannot update just one of them; they all must be updated together.
 
@@ -90,6 +90,8 @@ Currently only GitHub repos are supported, but I'm considering adding GitLab and
 ### Conservative updates
 
 `bundle update-interactive` updates the gems you select by running `bundle update --conservative [GEMS...]`. This means that only those specific gems will be updated. Indirect dependencies shared with other gems will not be affected.
+
+<img src="images/conservative.png" alt="Screenshot of gems being updated" width="762" />
 
 An exception is made for "meta gems" like `rails` that are composed of dependencies locked at exact versions. For example, if you chose to upgrade `rails`, the actual command issued to Bundler will be:
 
