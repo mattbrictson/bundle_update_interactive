@@ -9,6 +9,8 @@ gem "minitest-snapshots", "~> 1.1"
 gem "mocha", "~> 2.4"
 gem "observer"
 gem "rake", "~> 13.0"
+gem "vcr", "~> 6.2"
+gem "webmock", "~> 3.23"
 
 if RUBY_VERSION >= "3.3"
   gem "mighty_test", "~> 0.3"

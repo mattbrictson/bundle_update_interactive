@@ -1,37 +1,37 @@
 --- "\e[2;4mname\e[0m                \e[2;4mfrom\e[0m        \e[2;4mto\e[0m       \e[2;4mgroup\e[0m
   \               \e[2;4murl\e[0m\n\e[32maddressable\e[0m         2.8.6    →  2.8.\e[32m7\e[0m
-  \                        \e[34mhttp://example/addressable/v2.8.7\e[0m\n\e[32mbigdecimal\e[0m
-  \         3.1.6    →  3.1.\e[32m8\e[0m                         \e[34mhttp://example/bigdecimal/v3.1.8\e[0m\n\e[33mbuilder\e[0m
-  \            3.2.4    →  3.\e[33m3.0\e[0m                         \e[34mhttp://example/builder/v3.3.0\e[0m\n\e[33mconcurrent-ruby\e[0m
-  \    1.2.3    →  1.\e[33m3.3\e[0m                         \e[34mhttp://example/concurrent-ruby/v1.3.3\e[0m\n\e[32mdebug\e[0m
-  \              1.9.1    →  1.9.\e[32m2\e[0m    :development, :test  \e[34mhttp://example/debug/v1.9.2\e[0m\n\e[32mdrb\e[0m
-  \                2.2.0    →  2.2.\e[32m1\e[0m                         \e[34mhttp://example/drb/v2.2.1\e[0m\n\e[33merubi\e[0m
-  \              1.12.0   →  1.\e[33m13.0\e[0m                        \e[34mhttp://example/erubi/v1.13.0\e[0m\n\e[32mi18n\e[0m
-  \               1.14.1   →  1.14.\e[32m5\e[0m                        \e[34mhttp://example/i18n/v1.14.5\e[0m\n\e[33mirb\e[0m
-  \                1.11.1   →  1.\e[33m14.0\e[0m                        \e[34mhttp://example/irb/v1.14.0\e[0m\n\e[33mjbuilder\e[0m
-  \           2.11.5   →  2.\e[33m12.0\e[0m   :default             \e[34mhttp://example/jbuilder/v2.12.0\e[0m\n\e[32mmarcel\e[0m
-  \             1.0.2    →  1.0.\e[32m4\e[0m                         \e[34mhttp://example/marcel/v1.0.4\e[0m\n\e[33mminitest\e[0m
-  \           5.21.2   →  5.\e[33m24.1\e[0m                        \e[34mhttp://example/minitest/v5.24.1\e[0m\n\e[32mnet-imap\e[0m
-  \           0.4.9.1  →  0.4.\e[32m14\e[0m                        \e[34mhttp://example/net-imap/v0.4.14\e[0m\n\e[33mnet-smtp\e[0m
-  \           0.4.0.1  →  0.\e[33m5.0\e[0m                         \e[34mhttp://example/net-smtp/v0.5.0\e[0m\n\e[32mnio4r\e[0m
-  \              2.7.0    →  2.7.\e[32m3\e[0m                         \e[34mhttp://example/nio4r/v2.7.3\e[0m\n\e[32mnokogiri\e[0m
-  \           1.16.2   →  1.16.\e[32m6\e[0m                        \e[34mhttp://example/nokogiri/v1.16.6\e[0m\n\e[31mpublic_suffix\e[0m
-  \      5.0.4    →  \e[31m6.0.0\e[0m                         \e[34mhttp://example/public_suffix/v6.0.0\e[0m\n\e[33mracc\e[0m
-  \               1.7.3    →  1.\e[33m8.0\e[0m                         \e[34mhttp://example/racc/v1.8.0\e[0m\n\e[33mrack\e[0m
-  \               3.0.8    →  3.\e[33m1.7\e[0m                         \e[34mhttp://example/rack/v3.1.7\e[0m\n\e[32mrails\e[0m
-  \              7.1.3    →  7.1.3.\e[32m4\e[0m  :default             \e[34mhttp://example/rails/v7.1.3.4\e[0m\n\e[33mrake\e[0m
-  \               13.1.0   →  13.\e[33m2.1\e[0m                        \e[34mhttp://example/rake/v13.2.1\e[0m\n\e[33mrdoc\e[0m
-  \               6.6.2    →  6.\e[33m7.0\e[0m                         \e[34mhttp://example/rdoc/v6.7.0\e[0m\n\e[33mredis\e[0m
-  \              5.0.8    →  5.\e[33m2.0\e[0m    :default             \e[34mhttp://example/redis/v5.2.0\e[0m\n\e[33mredis-client\e[0m
-  \       0.18.0   →  0.\e[33m22.2\e[0m                        \e[34mhttp://example/redis-client/v0.22.2\e[0m\n\e[32mregexp_parser\e[0m
-  \      2.9.0    →  2.9.\e[32m2\e[0m                         \e[34mhttp://example/regexp_parser/v2.9.2\e[0m\n\e[33mreline\e[0m
-  \             0.4.2    →  0.\e[33m5.9\e[0m                         \e[34mhttp://example/reline/v0.5.9\e[0m\n\e[33mrexml\e[0m
-  \              3.2.6    →  3.\e[33m3.1\e[0m                         \e[34mhttp://example/rexml/v3.3.1\e[0m\n\e[33mselenium-webdriver\e[0m
-  \ 4.17.0   →  4.\e[33m22.0\e[0m   :test                \e[34mhttp://example/selenium-webdriver/v4.22.0\e[0m\n\e[33msprockets-rails\e[0m
-  \    3.4.2    →  3.\e[33m5.1\e[0m    :default             \e[34mhttp://example/sprockets-rails/v3.5.1\e[0m\n\e[32msqlite3\e[0m
-  \            1.7.2    →  1.7.\e[32m3\e[0m    :default             \e[34mhttp://example/sqlite3/v1.7.3\e[0m\n\e[32mstringio\e[0m
-  \           3.1.0    →  3.1.\e[32m1\e[0m                         \e[34mhttp://example/stringio/v3.1.1\e[0m\n\e[32mthor\e[0m
-  \               1.3.0    →  1.3.\e[32m1\e[0m                         \e[34mhttp://example/thor/v1.3.1\e[0m\n\e[31mturbo-rails\e[0m
-  \        1.5.0    →  \e[31m2.0.5\e[0m    :default             \e[34mhttp://example/turbo-rails/v2.0.5\e[0m\n\e[32mwebsocket\e[0m
-  \          1.2.10   →  1.2.\e[32m11\e[0m                        \e[34mhttp://example/websocket/v1.2.11\e[0m\n\e[32mzeitwerk\e[0m
-  \           2.6.12   →  2.6.\e[32m16\e[0m                        \e[34mhttp://example/zeitwerk/v2.6.16\e[0m"
+  \                        \e[34mhttps://github.com/sporkmonger/addressable/blob/main/CHANGELOG.md#v2.8.7\e[0m\n\e[32mbigdecimal\e[0m
+  \         3.1.6    →  3.1.\e[32m8\e[0m                         \e[34mhttps://github.com/ruby/bigdecimal/blob/master/CHANGES.md\e[0m\n\e[33mbuilder\e[0m
+  \            3.2.4    →  3.\e[33m3.0\e[0m                         \e[34mhttps://github.com/rails/builder/blob/master/CHANGES\e[0m\n\e[33mconcurrent-ruby\e[0m
+  \    1.2.3    →  1.\e[33m3.3\e[0m                         \e[34mhttps://github.com/ruby-concurrency/concurrent-ruby/blob/master/CHANGELOG.md\e[0m\n\e[32mdebug\e[0m
+  \              1.9.1    →  1.9.\e[32m2\e[0m    :development, :test  \e[34mhttps://github.com/ruby/debug/releases\e[0m\n\e[32mdrb\e[0m
+  \                2.2.0    →  2.2.\e[32m1\e[0m                         \e[34mhttps://github.com/ruby/drb/releases\e[0m\n\e[33merubi\e[0m
+  \              1.12.0   →  1.\e[33m13.0\e[0m                        \e[34mhttps://github.com/jeremyevans/erubi/blob/master/CHANGELOG\e[0m\n\e[32mi18n\e[0m
+  \               1.14.1   →  1.14.\e[32m5\e[0m                        \e[34mhttps://github.com/ruby-i18n/i18n/releases\e[0m\n\e[33mirb\e[0m
+  \                1.11.1   →  1.\e[33m14.0\e[0m                        \e[34mhttps://github.com/ruby/irb/releases\e[0m\n\e[33mjbuilder\e[0m
+  \           2.11.5   →  2.\e[33m12.0\e[0m   :default             \e[34mhttps://github.com/rails/jbuilder/releases/tag/v2.12.0\e[0m\n\e[32mmarcel\e[0m
+  \             1.0.2    →  1.0.\e[32m4\e[0m                         \e[34mhttps://github.com/rails/marcel/releases\e[0m\n\e[33mminitest\e[0m
+  \           5.21.2   →  5.\e[33m24.1\e[0m                        \e[34mhttps://github.com/minitest/minitest/blob/master/History.rdoc\e[0m\n\e[32mnet-imap\e[0m
+  \           0.4.9.1  →  0.4.\e[32m14\e[0m                        \e[34mhttps://github.com/ruby/net-imap/releases\e[0m\n\e[33mnet-smtp\e[0m
+  \           0.4.0.1  →  0.\e[33m5.0\e[0m                         \e[34mhttps://github.com/ruby/net-smtp/releases\e[0m\n\e[32mnio4r\e[0m
+  \              2.7.0    →  2.7.\e[32m3\e[0m                         \e[34mhttps://github.com/socketry/nio4r/blob/main/changes.md\e[0m\n\e[32mnokogiri\e[0m
+  \           1.16.2   →  1.16.\e[32m6\e[0m                        \e[34mhttps://nokogiri.org/CHANGELOG.html\e[0m\n\e[31mpublic_suffix\e[0m
+  \      5.0.4    →  \e[31m6.0.0\e[0m                         \e[34mhttps://github.com/weppos/publicsuffix-ruby/blob/master/CHANGELOG.md\e[0m\n\e[33mracc\e[0m
+  \               1.7.3    →  1.\e[33m8.0\e[0m                         \e[34mhttps://github.com/ruby/racc/releases\e[0m\n\e[33mrack\e[0m
+  \               3.0.8    →  3.\e[33m1.7\e[0m                         \e[34mhttps://github.com/rack/rack/blob/main/CHANGELOG.md\e[0m\n\e[32mrails\e[0m
+  \              7.1.3    →  7.1.3.\e[32m4\e[0m  :default             \e[34mhttps://github.com/rails/rails/releases/tag/v7.1.3.4\e[0m\n\e[33mrake\e[0m
+  \               13.1.0   →  13.\e[33m2.1\e[0m                        \e[34mhttps://github.com/ruby/rake/blob/v13.2.1/History.rdoc\e[0m\n\e[33mrdoc\e[0m
+  \               6.6.2    →  6.\e[33m7.0\e[0m                         \e[34mhttps://github.com/ruby/rdoc/releases\e[0m\n\e[33mredis\e[0m
+  \              5.0.8    →  5.\e[33m2.0\e[0m    :default             \e[34mhttps://github.com/redis/redis-rb/blob/master/CHANGELOG.md\e[0m\n\e[33mredis-client\e[0m
+  \       0.18.0   →  0.\e[33m22.2\e[0m                        \e[34mhttps://github.com/redis-rb/redis-client/blob/master/CHANGELOG.md\e[0m\n\e[32mregexp_parser\e[0m
+  \      2.9.0    →  2.9.\e[32m2\e[0m                         \e[34mhttps://github.com/ammar/regexp_parser/blob/master/CHANGELOG.md\e[0m\n\e[33mreline\e[0m
+  \             0.4.2    →  0.\e[33m5.9\e[0m                         \e[34mhttps://github.com/ruby/reline/releases\e[0m\n\e[33mrexml\e[0m
+  \              3.2.6    →  3.\e[33m3.1\e[0m                         \e[34mhttps://github.com/ruby/rexml/releases/tag/v3.3.1\e[0m\n\e[33mselenium-webdriver\e[0m
+  \ 4.17.0   →  4.\e[33m22.0\e[0m   :test                \e[34mhttps://github.com/SeleniumHQ/selenium/blob/trunk/rb/CHANGES\e[0m\n\e[33msprockets-rails\e[0m
+  \    3.4.2    →  3.\e[33m5.1\e[0m    :default             \e[34mhttps://github.com/rails/sprockets-rails/releases\e[0m\n\e[32msqlite3\e[0m
+  \            1.7.2    →  1.7.\e[32m3\e[0m    :default             \e[34mhttps://github.com/sparklemotion/sqlite3-ruby/blob/master/CHANGELOG.md\e[0m\n\e[32mstringio\e[0m
+  \           3.1.0    →  3.1.\e[32m1\e[0m                         \e[34mhttps://github.com/ruby/stringio/releases\e[0m\n\e[32mthor\e[0m
+  \               1.3.0    →  1.3.\e[32m1\e[0m                         \e[34mhttps://github.com/rails/thor/releases/tag/v1.3.1\e[0m\n\e[31mturbo-rails\e[0m
+  \        1.5.0    →  \e[31m2.0.5\e[0m    :default             \e[34mhttps://github.com/hotwired/turbo-rails/releases\e[0m\n\e[32mwebsocket\e[0m
+  \          1.2.10   →  1.2.\e[32m11\e[0m                        \e[34mhttps://github.com/imanel/websocket-ruby/releases\e[0m\n\e[32mzeitwerk\e[0m
+  \           2.6.12   →  2.6.\e[32m16\e[0m                        \e[34mhttps://github.com/fxn/zeitwerk/blob/master/CHANGELOG.md\e[0m"
