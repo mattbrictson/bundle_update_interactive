@@ -20,7 +20,7 @@ module BundleUpdateInteractive
       assert_equal "https://github.com/rails/rails/releases/tag/v7.1.3.4", outdated_gem.changelog_uri
     end
 
-    def test_changelog_uri_builds_github_comparison_url_if_github_repo
+    def test_changelog_uri_diff_url_for_github_repo
       outdated_gem = build(
         :outdated_gem,
         rubygems_source: false,
@@ -33,7 +33,7 @@ module BundleUpdateInteractive
       assert_equal "https://github.com/mattbrictson/mighty_test/compare/302ad5c...e27ab73", outdated_gem.changelog_uri
     end
 
-    def test_changelog_uri_builds_github_comparison_url_if_bitbucket_cloud_repo
+    def test_changelog_uri_builds_diff_url_for_bitbucket_cloud_repo
       outdated_gem = build(
         :outdated_gem,
         rubygems_source: false,
@@ -49,12 +49,7 @@ module BundleUpdateInteractive
       )
     end
 
-    def test_changelog_uri_falls_back_to_gem_spec_homepage_if_unsupported_git_repo
-      Gem::Specification
-        .expects(:find_by_name)
-        .with("httpx")
-        .returns(Gem::Specification.new("httpx") { |spec| spec.homepage = "https://honeyryderchuck.gitlab.io/httpx/" })
-
+    def test_changelog_uri_builds_diff_url_for_gitlab_repo
       outdated_gem = build(
         :outdated_gem,
         rubygems_source: false,
@@ -64,7 +59,25 @@ module BundleUpdateInteractive
         updated_git_version: "7278647"
       )
 
-      assert_equal "https://honeyryderchuck.gitlab.io/httpx/", outdated_gem.changelog_uri
+      assert_equal "https://gitlab.com/os85/httpx/-/compare/e250ea5...7278647", outdated_gem.changelog_uri
+    end
+
+    def test_changelog_uri_falls_back_to_gem_spec_homepage_if_unsupported_git_repo
+      Gem::Specification
+        .expects(:find_by_name)
+        .with("some_private_gem")
+        .returns(Gem::Specification.new("some_private_gem") { |spec| spec.homepage = "https://example/" })
+
+      outdated_gem = build(
+        :outdated_gem,
+        rubygems_source: false,
+        name: "some_private_gem",
+        git_source_uri: "git@private.example.com/repo.git",
+        current_git_version: "bedf6a5",
+        updated_git_version: "9c80944"
+      )
+
+      assert_equal "https://example/", outdated_gem.changelog_uri
     end
   end
 end

@@ -85,7 +85,7 @@ Then `bundle update-interactive` will show a diff link instead of a changelog, s
 
 https://github.com/rails/rails/compare/5a8d894...77dfa65
 
-This feature currently works for GitHub and Bitbucket repos. I'm considering adding support for GitLab as well.
+This feature currently works for GitHub, GitLab, and Bitbucket repos.
 
 ### Conservative updates
 

@@ -61,6 +61,8 @@ module BundleUpdateInteractive
 
       if github_repo
         "https://github.com/#{github_repo}/compare/#{current_git_version}...#{updated_git_version}"
+      elsif gitlab_repo
+        "https://gitlab.com/os85/httpx/-/compare/#{current_git_version}...#{updated_git_version}"
       elsif bitbucket_cloud_repo
         "https://bitbucket.org/#{bitbucket_cloud_repo}/branches/compare/#{updated_git_version}..#{current_git_version}"
       end
@@ -70,6 +72,12 @@ module BundleUpdateInteractive
       return nil unless updated_git_version
 
       git_source_uri.to_s[%r{^(?:git@github.com:|https://github.com/)([^/]+/[^/]+?)(:?\.git)?(?:$|/)}i, 1]
+    end
+
+    def gitlab_repo
+      return nil unless updated_git_version
+
+      git_source_uri.to_s[%r{^(?:git@gitlab.com:|https://gitlab.com/)([^/]+/[^/]+?)(:?\.git)?(?:$|/)}i, 1]
     end
 
     def bitbucket_cloud_repo
