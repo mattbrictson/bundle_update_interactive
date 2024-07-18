@@ -33,7 +33,23 @@ module BundleUpdateInteractive
       assert_equal "https://github.com/mattbrictson/mighty_test/compare/302ad5c...e27ab73", outdated_gem.changelog_uri
     end
 
-    def test_changelog_uri_falls_back_to_gem_spec_homepage_if_non_github_git_repo
+    def test_changelog_uri_builds_github_comparison_url_if_bitbucket_cloud_repo
+      outdated_gem = build(
+        :outdated_gem,
+        rubygems_source: false,
+        name: "atlassian-jwt",
+        git_source_uri: "https://bitbucket.org/atlassian/atlassian-jwt-ruby.git",
+        current_git_version: "7c06fd5",
+        updated_git_version: "e8b7a92"
+      )
+
+      assert_equal(
+        "https://bitbucket.org/atlassian/atlassian-jwt-ruby/branches/compare/e8b7a92..7c06fd5",
+        outdated_gem.changelog_uri
+      )
+    end
+
+    def test_changelog_uri_falls_back_to_gem_spec_homepage_if_unsupported_git_repo
       Gem::Specification
         .expects(:find_by_name)
         .with("httpx")
