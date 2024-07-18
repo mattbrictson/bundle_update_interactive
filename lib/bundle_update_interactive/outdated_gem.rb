@@ -35,8 +35,8 @@ module BundleUpdateInteractive
       return @changelog_uri if defined?(@changelog_uri)
 
       @changelog_uri =
-        if git_version_changed? && github_repo
-          "https://github.com/#{github_repo}/compare/#{current_git_version}...#{updated_git_version}"
+        if (diff_url = build_git_diff_url)
+          diff_url
         elsif rubygems_source?
           changelog_locator.find_changelog_uri(name: name, version: updated_version.to_s)
         else
@@ -56,10 +56,26 @@ module BundleUpdateInteractive
 
     attr_reader :changelog_locator
 
+    def build_git_diff_url
+      return nil unless git_version_changed?
+
+      if github_repo
+        "https://github.com/#{github_repo}/compare/#{current_git_version}...#{updated_git_version}"
+      elsif bitbucket_cloud_repo
+        "https://bitbucket.org/#{bitbucket_cloud_repo}/branches/compare/#{updated_git_version}..#{current_git_version}"
+      end
+    end
+
     def github_repo
       return nil unless updated_git_version
 
       git_source_uri.to_s[%r{^(?:git@github.com:|https://github.com/)([^/]+/[^/]+?)(:?\.git)?(?:$|/)}i, 1]
+    end
+
+    def bitbucket_cloud_repo
+      return nil unless updated_git_version
+
+      git_source_uri.to_s[%r{(?:@|://)bitbucket.org[:/]([^/]+/[^/]+?)(:?\.git)?(?:$|/)}i, 1]
     end
   end
 end

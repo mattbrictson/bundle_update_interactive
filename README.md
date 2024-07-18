@@ -75,17 +75,17 @@ If you discover a gem that is missing a changelog in `bundle update-interactive`
 
 ### Git diffs
 
-If your `Gemfile` sources a gem from a GitHub repo like this:
+If your `Gemfile` sources a gem from a Git repo like this:
 
 ```ruby
 gem "rails", github: "rails/rails", branch: "7-1-stable"
 ```
 
-Then `bundle update-interactive` will show a GitHub diff link instead of a changelog, so you can see exactly what changed when the gem is updated. For example:
+Then `bundle update-interactive` will show a diff link instead of a changelog, so you can see exactly what changed when the gem is updated. For example:
 
 https://github.com/rails/rails/compare/5a8d894...77dfa65
 
-Currently only GitHub repos are supported, but I'm considering adding GitLab and BitBucket as well.
+This feature currently works for GitHub and Bitbucket repos. I'm considering adding support for GitLab as well.
 
 ### Conservative updates
 
