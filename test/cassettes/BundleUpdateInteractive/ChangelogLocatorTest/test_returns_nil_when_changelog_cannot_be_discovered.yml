@@ -1,0 +1,95 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://rubygems.org/api/v2/rubygems/atlassian-jwt/versions/0.2.1.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.10.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1555'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Last-Modified:
+      - Sat, 30 Sep 2023 10:02:28 GMT
+      Cache-Control:
+      - max-age=60, public
+      Content-Security-Policy:
+      - default-src 'self'; font-src 'self' https://fonts.gstatic.com; img-src 'self'
+        https://secure.gaug.es https://gravatar.com https://www.gravatar.com https://secure.gravatar.com
+        https://*.fastly-insights.com https://avatars.githubusercontent.com; object-src
+        'none'; script-src 'self' 'sha256-d8BfrKFC6GOH8sHkHPe0WRYrAiIvDn8UIwURqFEBqNQ='
+        https://secure.gaug.es https://www.fastly-insights.com 'nonce-b7dcdc7c2abe4369c09b48b4c1bfc98a';
+        style-src 'self' https://fonts.googleapis.com 'nonce-b7dcdc7c2abe4369c09b48b4c1bfc98a';
+        connect-src 'self' https://s3-us-west-2.amazonaws.com/rubygems-dumps/ https://*.fastly-insights.com
+        https://fastly-insights.com https://api.github.com http://localhost:*; form-action
+        'self' https://github.com/login/oauth/authorize; frame-ancestors 'self'; base-uri
+        'self'; report-uri https://csp-report.browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pub852fa3e2312391fafa5640b60784e660&dd-evp-origin=content-security-policy&ddsource=csp-report&ddtags=service%3Arubygems.org%2Cversion%3A7821826525e2fbb3643dad35576547401efbca6d%2Cenv%3Aproduction%2Ctrace_id%3A527022768442802044
+      X-Request-Id:
+      - 17611363-1905-4966-842b-7a87706e7c2d
+      X-Runtime:
+      - '0.012256'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Backend:
+      - F_Rails 52.25.82.247:443
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 19 Jul 2024 00:09:50 GMT
+      Via:
+      - 1.1 varnish
+      Age:
+      - '27'
+      X-Served-By:
+      - cache-sjc10077-SJC
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Timer:
+      - S1721347790.053690,VS0,VE1
+      Vary:
+      - Accept-Encoding
+      Etag:
+      - '"7bc83f99fd32384a7776345fd002957a"'
+      Server:
+      - RubyGems.org
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"atlassian-jwt","downloads":32325569,"version":"0.2.1","version_created_at":"2021-08-13T00:04:13.459Z","version_downloads":13507385,"platform":"ruby","authors":"Spike
+        Ilacqua, Seb Ruiz, Ngoc Dao","info":"This gem simplifies generating the claims
+        needed to authenticate with the Atlassian Connect REST APIs.","licenses":["Apache
+        2.0"],"metadata":{},"yanked":false,"sha":"2fd2d87418773f2e140c038cb22e049069708aff2bd0a423a7e1740574e97823","spec_sha":"0ba9c46a844c4ff6c656f1a7c9763b50109d3ef4c76c33ecaa1fd79ac6e0244d","project_uri":"https://rubygems.org/gems/atlassian-jwt","gem_uri":"https://rubygems.org/gems/atlassian-jwt-0.2.1.gem","homepage_uri":"https://bitbucket.org/atlassian/atlassian-jwt-ruby","wiki_uri":null,"documentation_uri":"https://www.rubydoc.info/gems/atlassian-jwt/0.2.1","mailing_list_uri":null,"source_code_uri":null,"bug_tracker_uri":null,"changelog_uri":null,"funding_uri":null,"dependencies":{"development":[{"name":"json","requirements":"~\u003e
+        2.2"},{"name":"rake","requirements":"~\u003e 12.3"},{"name":"rspec","requirements":"~\u003e
+        3.8"}],"runtime":[{"name":"jwt","requirements":"~\u003e 2.1"}]},"built_at":"2021-08-12T00:00:00.000Z","created_at":"2021-08-13T00:04:13.459Z","description":"This
+        gem simplifies generating the claims needed to authenticate with the Atlassian
+        Connect REST APIs.","downloads_count":13507385,"number":"0.2.1","summary":"Encode
+        and decode JWT tokens for use with the Atlassian Connect REST APIs.","rubygems_version":"\u003e=
+        0","ruby_version":"\u003e= 0","prerelease":false,"requirements":[]}'
+  recorded_at: Fri, 19 Jul 2024 00:09:49 GMT
+recorded_with: VCR 6.2.0

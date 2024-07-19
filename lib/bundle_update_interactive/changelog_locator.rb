@@ -10,48 +10,72 @@ EXT_PATTERN = /md|txt|rdoc/i.freeze
 
 module BundleUpdateInteractive
   class ChangelogLocator
-    # TODO: refactor
-    def find_changelog_uri(name:, version: nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-      if version
-        response = Faraday.get("https://rubygems.org/api/v2/rubygems/#{name}/versions/#{version}.json")
-        version = nil unless response.success?
-      end
-
-      response = Faraday.get("https://rubygems.org/api/v1/gems/#{name}.json") if version.nil?
-
-      return nil unless response.success?
-
-      data = JSON.parse(response.body)
-
-      version ||= data["version"]
-      changelog_uri = data["changelog_uri"]
-      github_repo = guess_github_repo(data)
-
-      if changelog_uri.nil? && github_repo
-        file_list = Faraday.get("https://github.com/#{github_repo}")
-        if file_list.status == 301
-          github_repo = file_list.headers["Location"][GITHUB_PATTERN, 1]
-          file_list = Faraday.get(file_list.headers["Location"])
+    class GitHubRepo
+      def self.from_uris(*uris)
+        uris.flatten.each do |uri|
+          return new(Regexp.last_match(1)) if uri&.match(GITHUB_PATTERN)
         end
-        match = file_list.body.match(%r{/(#{github_repo}/blob/[^/]+/#{FILE_PATTERN}(?:\.#{EXT_PATTERN})?)"}i)
-        changelog_uri = "https://github.com/#{match[1]}" if match
+        nil
       end
 
-      if changelog_uri.nil? && github_repo
-        releases_uri = "https://github.com/#{github_repo}/releases"
-        changelog_uri = releases_uri if Faraday.head("#{releases_uri}/tag/v#{version}").success?
+      attr_reader :path
+
+      def initialize(path)
+        @path = path
       end
 
-      changelog_uri
+      def discover_changelog_uri(version)
+        repo_html = fetch_repo_html(follow_redirect: true)
+        return if repo_html.nil?
+
+        changelog_path = repo_html[%r{/(#{path}/blob/[^/]+/#{FILE_PATTERN}(?:\.#{EXT_PATTERN})?)"}i, 1]
+        return "https://github.com/#{changelog_path}" if changelog_path
+
+        releases_url = "https://github.com/#{path}/releases"
+        releases_url if Faraday.head("#{releases_url}/tag/v#{version}").success?
+      end
+
+      private
+
+      def fetch_repo_html(follow_redirect:)
+        response = Faraday.get("https://github.com/#{path}")
+
+        if response.status == 301 && follow_redirect
+          @path = response.headers["Location"][GITHUB_PATTERN, 1]
+          return fetch_repo_html(follow_redirect: false)
+        end
+
+        response.success? ? response.body : nil
+      end
+    end
+
+    def find_changelog_uri(name:, version: nil)
+      data = fetch_rubygems_data(name, version)
+      return if data.nil?
+
+      if (rubygems_changelog_uri = data["changelog_uri"])
+        rubygems_changelog_uri
+      elsif (github_repo = GitHubRepo.from_uris(data.values_at(*URI_KEYS)))
+        github_repo.discover_changelog_uri(data["version"])
+      end
     end
 
     private
 
-    def guess_github_repo(data)
-      data.values_at(*URI_KEYS).each do |uri|
-        return Regexp.last_match(1) if uri&.match(GITHUB_PATTERN)
-      end
-      nil
+    def fetch_rubygems_data(name, version)
+      api_url = if version.nil?
+                  "https://rubygems.org/api/v1/gems/#{name}.json"
+                else
+                  "https://rubygems.org/api/v2/rubygems/#{name}/versions/#{version}.json"
+                end
+
+      response = Faraday.get(api_url)
+
+      # Try again without the version in case the version does not exist at rubygems for some reason.
+      # This can happen when using a pre-release Ruby that has a bundled gem newer than the published version.
+      return fetch_rubygems_data(name, nil) if !response.success? && !version.nil?
+
+      response.success? ? JSON.parse(response.body) : nil
     end
   end
 end

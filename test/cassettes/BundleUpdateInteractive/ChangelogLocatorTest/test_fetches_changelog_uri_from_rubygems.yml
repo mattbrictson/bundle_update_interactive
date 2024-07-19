@@ -1,0 +1,87 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://rubygems.org/api/v2/rubygems/nokogiri/versions/1.16.6.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.10.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2370'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Last-Modified:
+      - Thu, 13 Jun 2024 13:46:04 GMT
+      Cache-Control:
+      - max-age=60, public
+      Content-Security-Policy:
+      - default-src 'self'; font-src 'self' https://fonts.gstatic.com; img-src 'self'
+        https://secure.gaug.es https://gravatar.com https://www.gravatar.com https://secure.gravatar.com
+        https://*.fastly-insights.com https://avatars.githubusercontent.com; object-src
+        'none'; script-src 'self' 'sha256-d8BfrKFC6GOH8sHkHPe0WRYrAiIvDn8UIwURqFEBqNQ='
+        https://secure.gaug.es https://www.fastly-insights.com 'nonce-3c5ebb0a4bc0011ed570ac0171f43194';
+        style-src 'self' https://fonts.googleapis.com 'nonce-3c5ebb0a4bc0011ed570ac0171f43194';
+        connect-src 'self' https://s3-us-west-2.amazonaws.com/rubygems-dumps/ https://*.fastly-insights.com
+        https://fastly-insights.com https://api.github.com http://localhost:*; form-action
+        'self' https://github.com/login/oauth/authorize; frame-ancestors 'self'; base-uri
+        'self'; report-uri https://csp-report.browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pub852fa3e2312391fafa5640b60784e660&dd-evp-origin=content-security-policy&ddsource=csp-report&ddtags=service%3Arubygems.org%2Cversion%3A7821826525e2fbb3643dad35576547401efbca6d%2Cenv%3Aproduction%2Ctrace_id%3A1406535278514377968
+      X-Request-Id:
+      - b1fde17b-f612-41b8-9046-1849ee58bdb0
+      X-Runtime:
+      - '0.010818'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Backend:
+      - F_Rails 34.212.104.34:443
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Date:
+      - Fri, 19 Jul 2024 00:04:25 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-sjc10075-SJC
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1721347465.227601,VS0,VE34
+      Vary:
+      - Accept-Encoding
+      Etag:
+      - '"90d870c71b0fc5d637fa5b5d3e9e9884"'
+      Server:
+      - RubyGems.org
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJuYW1lIjoibm9rb2dpcmkiLCJkb3dubG9hZHMiOjgyNDE1OTU4OSwidmVyc2lvbiI6IjEuMTYuNiIsInZlcnNpb25fY3JlYXRlZF9hdCI6IjIwMjQtMDYtMTNUMTM6NDY6MDMuNzA5WiIsInZlcnNpb25fZG93bmxvYWRzIjoxMTg1NjgsInBsYXRmb3JtIjoicnVieSIsImF1dGhvcnMiOiJNaWtlIERhbGVzc2lvLCBBYXJvbiBQYXR0ZXJzb24sIFlva28gSGFyYWRhLCBBa2lub3JpIE1VU0hBLCBKb2huIFNoYWhpZCwgS2Fyb2wgQnVjZWssIFNhbSBSdWJ5LCBDcmFpZyBCYXJuZXMsIFN0ZXBoZW4gQ2hlY2tvd2F5LCBMYXJzIEthbmlzLCBTZXJnaW8gQXJiZW8sIFRpbW90aHkgRWxsaW90dCwgTm9idXlvc2hpIE5ha2FkYSIsImluZm8iOiJOb2tvZ2lyaSAo6Yu4KSBtYWtlcyBpdCBlYXN5IGFuZCBwYWlubGVzcyB0byB3b3JrIHdpdGggWE1MIGFuZCBIVE1MIGZyb20gUnVieS4gSXQgcHJvdmlkZXMgYVxuc2Vuc2libGUsIGVhc3ktdG8tdW5kZXJzdGFuZCBBUEkgZm9yIHJlYWRpbmcsIHdyaXRpbmcsIG1vZGlmeWluZywgYW5kIHF1ZXJ5aW5nIGRvY3VtZW50cy4gSXQgaXNcbmZhc3QgYW5kIHN0YW5kYXJkcy1jb21wbGlhbnQgYnkgcmVseWluZyBvbiBuYXRpdmUgcGFyc2VycyBsaWtlIGxpYnhtbDIsIGxpYmd1bWJvLCBvciB4ZXJjZXMuXG4iLCJsaWNlbnNlcyI6WyJNSVQiXSwibWV0YWRhdGEiOnsiaG9tZXBhZ2VfdXJpIjoiaHR0cHM6Ly9ub2tvZ2lyaS5vcmciLCJjaGFuZ2Vsb2dfdXJpIjoiaHR0cHM6Ly9ub2tvZ2lyaS5vcmcvQ0hBTkdFTE9HLmh0bWwiLCJidWdfdHJhY2tlcl91cmkiOiJodHRwczovL2dpdGh1Yi5jb20vc3BhcmtsZW1vdGlvbi9ub2tvZ2lyaS9pc3N1ZXMiLCJzb3VyY2VfY29kZV91cmkiOiJodHRwczovL2dpdGh1Yi5jb20vc3BhcmtsZW1vdGlvbi9ub2tvZ2lyaSIsImRvY3VtZW50YXRpb25fdXJpIjoiaHR0cHM6Ly9ub2tvZ2lyaS5vcmcvcmRvYy9pbmRleC5odG1sIiwicnVieWdlbXNfbWZhX3JlcXVpcmVkIjoidHJ1ZSJ9LCJ5YW5rZWQiOmZhbHNlLCJzaGEiOiI5MzVmZTRkZDY3ZDQzNzdmNGEwNTAwMmFjYjFmZmJhZGJjYWUyNjVlYThlNzg2OWZjNDBlM2E4MTIxZjNlMWVmIiwic3BlY19zaGEiOiJkODQwNWNhMjg2Zjc1MDAxYzBjMmNhYjI4MDU3YjA4NzkwNWIwYjkxNTViYzMxMDE3NzM2NTY1ZjgzMmM3MjNmIiwicHJvamVjdF91cmkiOiJodHRwczovL3J1YnlnZW1zLm9yZy9nZW1zL25va29naXJpIiwiZ2VtX3VyaSI6Imh0dHBzOi8vcnVieWdlbXMub3JnL2dlbXMvbm9rb2dpcmktMS4xNi42LmdlbSIsImhvbWVwYWdlX3VyaSI6Imh0dHBzOi8vbm9rb2dpcmkub3JnIiwid2lraV91cmkiOm51bGwsImRvY3VtZW50YXRpb25fdXJpIjoiaHR0cHM6Ly9ub2tvZ2lyaS5vcmcvcmRvYy9pbmRleC5odG1sIiwibWFpbGluZ19saXN0X3VyaSI6bnVsbCwic291cmNlX2NvZGVfdXJpIjoiaHR0cHM6Ly9naXRodWIuY29tL3NwYXJrbGVtb3Rpb24vbm9rb2dpcmkiLCJidWdfdHJhY2tlcl91cmkiOiJodHRwczovL2dpdGh1Yi5jb20vc3BhcmtsZW1vdGlvbi9ub2tvZ2lyaS9pc3N1ZXMiLCJjaGFuZ2Vsb2dfdXJpIjoiaHR0cHM6Ly9ub2tvZ2lyaS5vcmcvQ0hBTkdFTE9HLmh0bWwiLCJmdW5kaW5nX3VyaSI6bnVsbCwiZGVwZW5kZW5jaWVzIjp7ImRldmVsb3BtZW50IjpbXSwicnVudGltZSI6W3sibmFtZSI6Im1pbmlfcG9ydGlsZTIiLCJyZXF1aXJlbWVudHMiOiJ+XHUwMDNlIDIuOC4yIn0seyJuYW1lIjoicmFjYyIsInJlcXVpcmVtZW50cyI6In5cdTAwM2UgMS40In1dfSwiYnVpbHRfYXQiOiIyMDI0LTA2LTEzVDAwOjAwOjAwLjAwMFoiLCJjcmVhdGVkX2F0IjoiMjAyNC0wNi0xM1QxMzo0NjowMy43MDlaIiwiZGVzY3JpcHRpb24iOiJOb2tvZ2lyaSAo6Yu4KSBtYWtlcyBpdCBlYXN5IGFuZCBwYWlubGVzcyB0byB3b3JrIHdpdGggWE1MIGFuZCBIVE1MIGZyb20gUnVieS4gSXQgcHJvdmlkZXMgYVxuc2Vuc2libGUsIGVhc3ktdG8tdW5kZXJzdGFuZCBBUEkgZm9yIHJlYWRpbmcsIHdyaXRpbmcsIG1vZGlmeWluZywgYW5kIHF1ZXJ5aW5nIGRvY3VtZW50cy4gSXQgaXNcbmZhc3QgYW5kIHN0YW5kYXJkcy1jb21wbGlhbnQgYnkgcmVseWluZyBvbiBuYXRpdmUgcGFyc2VycyBsaWtlIGxpYnhtbDIsIGxpYmd1bWJvLCBvciB4ZXJjZXMuXG4iLCJkb3dubG9hZHNfY291bnQiOjExODU2OCwibnVtYmVyIjoiMS4xNi42Iiwic3VtbWFyeSI6Ik5va29naXJpICjpi7gpIG1ha2VzIGl0IGVhc3kgYW5kIHBhaW5sZXNzIHRvIHdvcmsgd2l0aCBYTUwgYW5kIEhUTUwgZnJvbSBSdWJ5LiIsInJ1YnlnZW1zX3ZlcnNpb24iOiJcdTAwM2U9IDAiLCJydWJ5X3ZlcnNpb24iOiJcdTAwM2U9IDMuMC4wIiwicHJlcmVsZWFzZSI6ZmFsc2UsInJlcXVpcmVtZW50cyI6W119
+  recorded_at: Fri, 19 Jul 2024 00:04:25 GMT
+recorded_with: VCR 6.2.0
