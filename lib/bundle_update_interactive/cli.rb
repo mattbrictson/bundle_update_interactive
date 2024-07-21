@@ -6,33 +6,29 @@ module BundleUpdateInteractive
     autoload :Options, "bundle_update_interactive/cli/options"
     autoload :Row, "bundle_update_interactive/cli/row"
     autoload :Table, "bundle_update_interactive/cli/table"
-    autoload :ThorExt, "bundle_update_interactive/cli/thor_ext"
 
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
       Options.parse(argv)
 
       report = generate_report
-      say("No gems to update.") && return if report.updateable_gems.empty?
+      puts("No gems to update.").then { return } if report.updateable_gems.empty?
 
-      say
-      say legend
-      say
+      puts
+      puts legend
+      puts
       selected_gems = MultiSelect.prompt_for_gems_to_update(report.updateable_gems)
-      say("No gems to update.") && return if selected_gems.empty?
+      puts("No gems to update.").then { return } if selected_gems.empty?
 
-      say "\nUpdating the following gems."
-      say
-      say Table.new(selected_gems).render
-      say
+      puts "\nUpdating the following gems."
+      puts
+      puts Table.new(selected_gems).render
+      puts
       report.bundle_update!(*selected_gems.keys)
+    rescue Exception => e # rubocop:disable Lint/RescueException
+      handle_exception(e)
     end
 
     private
-
-    def say(*message)
-      puts(*message)
-      true
-    end
 
     def legend
       pastel = BundleUpdateInteractive.pastel
@@ -70,6 +66,18 @@ module BundleUpdateInteractive
         $stderr.print(".")
       end
       $stderr.print("\n")
+    end
+
+    def handle_exception(error)
+      case error
+      when Errno::EPIPE
+        # Ignore
+      when OptionParser::ParseError, Interrupt, Bundler::Dsl::DSLError
+        puts BundleUpdateInteractive.pastel.red(error.message)
+        exit false
+      else
+        raise
+      end
     end
   end
 end
