@@ -1,26 +1,16 @@
 # frozen_string_literal: true
 
-require "thor"
-
 module BundleUpdateInteractive
-  class CLI < Thor
+  class CLI
     autoload :MultiSelect, "bundle_update_interactive/cli/multi_select"
+    autoload :Options, "bundle_update_interactive/cli/options"
     autoload :Row, "bundle_update_interactive/cli/row"
     autoload :Table, "bundle_update_interactive/cli/table"
     autoload :ThorExt, "bundle_update_interactive/cli/thor_ext"
 
-    extend ThorExt::Start
+    def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
+      Options.parse(argv)
 
-    default_command :ui
-    map %w[-v --version] => "version"
-
-    desc "version", "Display bundle_update_interactive version", hide: true
-    def version
-      say "bundle_update_interactive/#{VERSION} #{RUBY_DESCRIPTION}"
-    end
-
-    desc "ui", "Update Gemfile.lock interactively", hide: true
-    def ui # rubocop:disable Metrics/AbcSize
       report = generate_report
       say("No gems to update.") && return if report.updateable_gems.empty?
 
@@ -38,6 +28,11 @@ module BundleUpdateInteractive
     end
 
     private
+
+    def say(*message)
+      puts(*message)
+      true
+    end
 
     def legend
       pastel = BundleUpdateInteractive.pastel
