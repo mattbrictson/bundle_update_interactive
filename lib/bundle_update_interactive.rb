@@ -6,6 +6,7 @@ module BundleUpdateInteractive
   autoload :BundlerCommands, "bundle_update_interactive/bundler_commands"
   autoload :ChangelogLocator, "bundle_update_interactive/changelog_locator"
   autoload :CLI, "bundle_update_interactive/cli"
+  autoload :Error, "bundle_update_interactive/error"
   autoload :Gemfile, "bundle_update_interactive/gemfile"
   autoload :Lockfile, "bundle_update_interactive/lockfile"
   autoload :LockfileEntry, "bundle_update_interactive/lockfile_entry"

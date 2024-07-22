@@ -72,7 +72,7 @@ module BundleUpdateInteractive
       case error
       when Errno::EPIPE
         # Ignore
-      when OptionParser::ParseError, Interrupt, Bundler::Dsl::DSLError
+      when BundleUpdateInteractive::Error, OptionParser::ParseError, Interrupt, Bundler::Dsl::DSLError
         puts BundleUpdateInteractive.pastel.red(error.message)
         exit false
       else
