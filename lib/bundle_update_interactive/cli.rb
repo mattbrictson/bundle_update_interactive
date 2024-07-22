@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bundler"
+
 module BundleUpdateInteractive
   class CLI
     autoload :MultiSelect, "bundle_update_interactive/cli/multi_select"
