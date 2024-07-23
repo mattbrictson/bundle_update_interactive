@@ -63,6 +63,12 @@ module BundleUpdateInteractive
       assert_equal %w[--version], argv
     end
 
+    def test_parse_returns_an_instance_of_cli_options
+      options = CLI::Options.parse([])
+
+      assert_instance_of CLI::Options, options
+    end
+
     private
 
     def capturing_stdout_and_exit_status

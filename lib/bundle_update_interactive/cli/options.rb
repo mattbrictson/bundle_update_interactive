@@ -6,13 +6,16 @@ module BundleUpdateInteractive
   class CLI::Options
     class << self
       def parse(argv=ARGV)
-        remaining = parser.parse!(argv.dup)
+        options = new
+        remaining = build_parser(options).parse!(argv.dup)
         raise Error, "update-interactive does not accept arguments. See --help for available options." if remaining.any?
+
+        options.freeze
       end
 
       private
 
-      def parser
+      def build_parser(options) # rubocop:disable Lint/UnusedMethodArgument
         OptionParser.new do |parser|
           parser.banner = "Usage: bundle update-interactive"
           parser.on("-v", "--version", "Display bundle_update_interactive version") do
