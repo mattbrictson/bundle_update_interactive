@@ -32,6 +32,16 @@ module BundleUpdateInteractive
       entries_by_name[gem_name]
     end
 
+    def gems_exclusively_installed_by(gemfile:, groups:)
+      return [] if groups.empty?
+
+      other_group_gems = gemfile.dependencies.filter_map { |gem| gem.name unless (gem.groups & groups).any? }
+      other_group_gems &= entries_by_name.keys
+      gems_installed_by_other_groups = other_group_gems + traverse_transient_dependencies(*other_group_gems)
+
+      entries_by_name.keys - gems_installed_by_other_groups
+    end
+
     private
 
     attr_reader :entries_by_name, :specs_by_name

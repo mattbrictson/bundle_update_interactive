@@ -11,6 +11,13 @@ module BundleUpdateInteractive
       assert_equal "bundler output", result
     end
 
+    def test_read_updated_lockfile_runs_bundle_lock_with_specified_gems_conservatively
+      expect_backticks("bundle lock --print --conservative --update actionpack railties", captures: "bundler output")
+      result = BundlerCommands.read_updated_lockfile("actionpack", "railties")
+
+      assert_equal "bundler output", result
+    end
+
     def test_read_updated_lockfile_raises_if_bundler_fails_to_run
       expect_backticks("bundle lock --print --update", success: false)
 

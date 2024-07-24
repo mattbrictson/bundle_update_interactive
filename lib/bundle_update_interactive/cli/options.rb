@@ -15,9 +15,21 @@ module BundleUpdateInteractive
 
       private
 
-      def build_parser(options) # rubocop:disable Lint/UnusedMethodArgument
+      def build_parser(options) # rubocop:disable Metrics/MethodLength
         OptionParser.new do |parser|
           parser.banner = "Usage: bundle update-interactive"
+          parser.on(
+            "--exclusively=GROUP",
+            "Update gems that exclusively belong to the specified Gemfile GROUP"
+          ) do |value|
+            options.exclusively = value.split(",").map(&:strip).reject(&:empty?).map(&:to_sym)
+          end
+          parser.on(
+            "-D",
+            "Update development and test gems only; short for --exclusively=development,test"
+          ) do
+            options.exclusively = %i[development test]
+          end
           parser.on("-v", "--version", "Display bundle_update_interactive version") do
             require "bundler"
             puts "bundle_update_interactive/#{VERSION} bundler/#{Bundler::VERSION} #{RUBY_DESCRIPTION}"
@@ -29,6 +41,12 @@ module BundleUpdateInteractive
           end
         end
       end
+    end
+
+    attr_accessor :exclusively
+
+    def initialize
+      @exclusively = []
     end
   end
 end

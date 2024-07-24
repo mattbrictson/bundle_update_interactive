@@ -47,5 +47,38 @@ module BundleUpdateInteractive
       refute_predicate lockfile["rails"], :exact_requirement?
       refute_predicate lockfile["nokogiri"], :exact_requirement?
     end
+
+    def test_gems_exclusively_installed_by_development_and_test_groups
+      gemfile = Gemfile.parse(File.expand_path("../fixtures/Gemfile", __dir__))
+      lockfile = Lockfile.parse(File.read(File.expand_path("../fixtures/Gemfile.lock", __dir__)))
+      exclusively_installed = lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: %i[development test])
+
+      assert_equal(
+        %w[
+          addressable
+          bindex
+          capybara
+          debug
+          matrix
+          public_suffix
+          regexp_parser
+          rexml
+          rubyzip
+          selenium-webdriver
+          web-console
+          websocket
+          xpath
+        ],
+        exclusively_installed.sort
+      )
+    end
+
+    def test_gems_exclusively_installed_by_no_groups_is_empty_array
+      gemfile = Gemfile.parse(File.expand_path("../fixtures/Gemfile", __dir__))
+      lockfile = Lockfile.parse(File.read(File.expand_path("../fixtures/Gemfile.lock", __dir__)))
+      exclusively_installed = lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: [])
+
+      assert_empty exclusively_installed
+    end
   end
 end

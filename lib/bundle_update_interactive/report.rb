@@ -8,11 +8,13 @@ require "set"
 module BundleUpdateInteractive
   class Report
     class << self
-      def generate
+      # TODO: test
+      def generate(groups: [])
         gemfile = Gemfile.parse
         current_lockfile = Lockfile.parse
-        updated_lockfile = Lockfile.parse(BundlerCommands.read_updated_lockfile)
+        gems = groups.any? ? current_lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: groups) : nil
 
+        updated_lockfile = gems&.none? ? nil : Lockfile.parse(BundlerCommands.read_updated_lockfile(*Array(gems)))
         new(gemfile: gemfile, current_lockfile: current_lockfile, updated_lockfile: updated_lockfile)
       end
     end
@@ -23,7 +25,7 @@ module BundleUpdateInteractive
       @current_lockfile = current_lockfile
       @outdated_gems = current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
         name = current_lockfile_entry.name
-        updated_lockfile_entry = updated_lockfile[name]
+        updated_lockfile_entry = updated_lockfile && updated_lockfile[name]
         next unless current_lockfile_entry.older_than?(updated_lockfile_entry)
 
         hash[name] = build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile[name]&.groups)
