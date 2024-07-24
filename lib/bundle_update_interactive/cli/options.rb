@@ -20,7 +20,7 @@ module BundleUpdateInteractive
           parser.banner = "Usage: bundle update-interactive"
           parser.on(
             "--exclusively=GROUP",
-            "Update gems that exclusively belong to the specified Gemfile GROUP"
+            "Update gems that exclusively belong to the specified Gemfile GROUP(s) (comma-separated)"
           ) do |value|
             options.exclusively = value.split(",").map(&:strip).reject(&:empty?).map(&:to_sym)
           end
