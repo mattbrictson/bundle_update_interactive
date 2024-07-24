@@ -54,5 +54,13 @@ module BundleUpdateInteractive
         end
       end
     end
+
+    def test_generate_returns_empty_report_when_given_non_existent_group
+      Dir.chdir(File.expand_path("../fixtures", __dir__)) do
+        report = Report.generate(groups: [:assets])
+
+        assert_empty report.updateable_gems
+      end
+    end
   end
 end
