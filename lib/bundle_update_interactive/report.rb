@@ -8,7 +8,6 @@ require "set"
 module BundleUpdateInteractive
   class Report
     class << self
-      # TODO: test
       def generate(groups: [])
         gemfile = Gemfile.parse
         current_lockfile = Lockfile.parse

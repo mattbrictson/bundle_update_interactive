@@ -22,5 +22,37 @@ module BundleUpdateInteractive
         end
       end
     end
+
+    def test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups
+      use_vcr_cassette("test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups") do
+        Dir.chdir(File.expand_path("../fixtures", __dir__)) do
+          updated_lockfile = File.read("Gemfile.lock.development-test-updated")
+          BundlerCommands.expects(:read_updated_lockfile).with(
+            *%w[
+              addressable
+              bindex
+              capybara
+              debug
+              matrix
+              public_suffix
+              regexp_parser
+              rexml
+              rubyzip
+              selenium-webdriver
+              web-console
+              websocket
+              xpath
+            ]
+          ).returns(updated_lockfile)
+          mock_vulnerable_gems("actionpack", "rexml", "devise")
+
+          report = Report.generate(groups: %i[development test])
+          report.scan_for_vulnerabilities!
+
+          gem_update_table = CLI::Table.new(report.updateable_gems).render
+          assert_matches_snapshot(gem_update_table)
+        end
+      end
+    end
   end
 end
