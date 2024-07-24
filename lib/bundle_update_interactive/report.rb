@@ -21,7 +21,7 @@ module BundleUpdateInteractive
 
     def initialize(gemfile:, current_lockfile:, updated_lockfile:)
       @current_lockfile = current_lockfile
-      @outdated_gems ||= current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
+      @outdated_gems = current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
         name = current_lockfile_entry.name
         updated_lockfile_entry = updated_lockfile[name]
         next unless current_lockfile_entry.older_than?(updated_lockfile_entry)
@@ -36,7 +36,7 @@ module BundleUpdateInteractive
 
     def updateable_gems
       @updateable_gems ||= outdated_gems.reject do |name, _|
-        current_lockfile[name].exact_dependency?
+        current_lockfile[name].exact_requirement?
       end.freeze
     end
 
