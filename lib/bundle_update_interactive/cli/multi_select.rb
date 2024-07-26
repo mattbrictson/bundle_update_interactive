@@ -28,7 +28,6 @@ class BundleUpdateInteractive::CLI
       def keyctrl_a(*); end
       def keyctrl_r(*); end
 
-      # TODO: test
       def keypress(event)
         case event.value
         when "k", "p" then keyup
@@ -46,10 +45,10 @@ class BundleUpdateInteractive::CLI
       outdated_gems.slice(*chosen)
     end
 
-    def initialize(title:, table:)
+    def initialize(title:, table:, prompt: nil)
       @title = title
       @table = table
-      @tty_prompt = TTY::Prompt.new(
+      @tty_prompt = prompt || TTY::Prompt.new(
         interrupt: lambda {
           puts
           exit(130)
