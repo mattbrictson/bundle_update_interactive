@@ -21,6 +21,22 @@ class BundleUpdateInteractive::CLI
       def selected_names
         ""
       end
+
+      # Unregister tty-prompt's default ctrl-a and ctrl-r bindings
+      alias select_all keyctrl_a
+      alias reverse_selection keyctrl_r
+      def keyctrl_a(*); end
+      def keyctrl_r(*); end
+
+      # TODO: test
+      def keypress(event)
+        case event.value
+        when "k", "p" then keyup
+        when "j", "n" then keydown
+        when "a" then select_all
+        when "r" then reverse_selection
+        end
+      end
     end
 
     def self.prompt_for_gems_to_update(outdated_gems)
@@ -39,8 +55,6 @@ class BundleUpdateInteractive::CLI
           exit(130)
         }
       )
-      add_keybindings
-
       @pastel = BundleUpdateInteractive.pastel
     end
 
@@ -53,16 +67,9 @@ class BundleUpdateInteractive::CLI
 
     attr_reader :pastel, :table, :tty_prompt, :title
 
-    def add_keybindings
-      tty_prompt.on(:keypress) do |event|
-        tty_prompt.trigger(:keyup) if %w[k p].include?(event.value)
-        tty_prompt.trigger(:keydown) if %w[j n].include?(event.value)
-      end
-    end
-
     def help
       [
-        pastel.dim("\nPress <space> to select, ↑/↓ move, <ctrl-a> all, <ctrl-r> reverse, <enter> to finish."),
+        pastel.dim("\nPress <space> to select, ↑/↓ move, <a> all, <r> reverse, <enter> to finish."),
         "\n    ",
         table.render_header
       ].join
