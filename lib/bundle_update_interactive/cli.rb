@@ -58,7 +58,7 @@ module BundleUpdateInteractive
     end
 
     def whisper(message)
-      $stderr.puts(message) # rubocop:disable Style/StderrPuts
+      $stderr.puts(message)
     end
 
     def progress(message, items, &block)
@@ -75,7 +75,7 @@ module BundleUpdateInteractive
       when Errno::EPIPE
         # Ignore
       when BundleUpdateInteractive::Error, OptionParser::ParseError, Interrupt, Bundler::Dsl::DSLError
-        puts BundleUpdateInteractive.pastel.red(error.message)
+        $stderr.puts BundleUpdateInteractive.pastel.red(error.message)
         exit false
       else
         raise
