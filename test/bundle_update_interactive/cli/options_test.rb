@@ -5,7 +5,7 @@ require "test_helper"
 module BundleUpdateInteractive
   class CLI::OptionsTest < Minitest::Test
     def test_prints_help_and_exits_when_given_dash_h
-      stdout, status = capturing_stdout_and_exit_status do
+      stdout, _stderr, status = capture_io_and_exit_status do
         CLI::Options.parse(%w[-h])
       end
 
@@ -14,7 +14,7 @@ module BundleUpdateInteractive
     end
 
     def test_prints_help_and_exits_when_given_dash_dash_help
-      stdout, status = capturing_stdout_and_exit_status do
+      stdout, _stderr, status = capture_io_and_exit_status do
         CLI::Options.parse(%w[--help])
       end
 
@@ -23,7 +23,7 @@ module BundleUpdateInteractive
     end
 
     def test_prints_version_and_exits_when_given_dash_v
-      stdout, status = capturing_stdout_and_exit_status do
+      stdout, _stderr, status = capture_io_and_exit_status do
         CLI::Options.parse(%w[-v])
       end
 
@@ -32,7 +32,7 @@ module BundleUpdateInteractive
     end
 
     def test_prints_version_and_exits_when_given_dash_dash_version
-      stdout, status = capturing_stdout_and_exit_status do
+      stdout, _stderr, status = capture_io_and_exit_status do
         CLI::Options.parse(%w[-v])
       end
 
@@ -58,7 +58,7 @@ module BundleUpdateInteractive
 
     def test_does_not_modify_argv
       argv = %w[--version]
-      capturing_stdout_and_exit_status { CLI::Options.parse(argv) }
+      capture_io_and_exit_status { CLI::Options.parse(argv) }
 
       assert_equal %w[--version], argv
     end
@@ -67,24 +67,6 @@ module BundleUpdateInteractive
       options = CLI::Options.parse([])
 
       assert_instance_of CLI::Options, options
-    end
-
-    private
-
-    def capturing_stdout_and_exit_status
-      exit_status = nil
-      stdout = +""
-
-      out, err = capture_io do
-        yield
-      rescue SystemExit => e
-        exit_status = e.status
-      end
-
-      stdout << out
-      $stderr << err unless err.empty?
-
-      [stdout, exit_status]
     end
   end
 end
