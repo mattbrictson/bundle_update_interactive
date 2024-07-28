@@ -2,4 +2,5 @@
 # frozen_string_literal: true
 
 require "bundle_update_interactive"
-BundleUpdateInteractive::CLI.start(ARGV)
+
+BundleUpdateInteractive::CLI.new.run

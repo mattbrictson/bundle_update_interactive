@@ -106,6 +106,9 @@ Style/EmptyMethod:
 Style/NumericPredicate:
   Enabled: false
 
+Style/StderrPuts:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
