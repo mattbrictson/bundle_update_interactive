@@ -87,6 +87,36 @@ https://github.com/rails/rails/compare/5a8d894...77dfa65
 
 This feature currently works for GitHub, GitLab, and Bitbucket repos.
 
+### Limit impact by Gemfile groups
+
+The effects of `bundle update-interactive` can be limited to one or more Gemfile groups using the `--exclusively` option:
+
+```sh
+bundle update-interactive --exclusively=group1,group2
+```
+
+This is especially useful when you want to safely update a subset of your lock file without introducing any risk to your application in production. The best way to do this is with `--exclusively=development,test`, which can be abbreviated to simply `-D`:
+
+```sh
+# Update non-production dependencies.
+# This is equivalent to `bundle update-interactive --exclusively=development,test`
+bundle update-interactive -D
+```
+
+The `--exclusively` and `-D` options will cause `update-interactive` to only consider gems that are used _exclusively_ by the specified Gemfile groups. Indirect dependencies that are shared with other Gemfile groups will not be updated.
+
+For example, given this Gemfile:
+
+```ruby
+gem "rails"
+
+group :test do
+  gem "capybara"
+end
+```
+
+If `--exclusively=test` is used, `capybara` and its indirect dependency `xpath` are both exclusively used in test and can therefore be updated. However, capybara's `nokogiri` indirect dependency, which is also used in production via `rails` → `actionpack` → `nokogiri`, would not be allowed to update.
+
 ### Conservative updates
 
 `bundle update-interactive` updates the gems you select by running `bundle update --conservative [GEMS...]`. This means that only those specific gems will be updated. Indirect dependencies shared with other gems will not be affected.

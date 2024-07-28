@@ -18,5 +18,9 @@ module BundleUpdateInteractive
     def [](name)
       @dependencies[name]
     end
+
+    def dependencies
+      @dependencies.values
+    end
   end
 end

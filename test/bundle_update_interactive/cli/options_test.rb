@@ -40,6 +40,21 @@ module BundleUpdateInteractive
       assert_equal(0, status)
     end
 
+    def test_exclusively_is_empty_array_by_default
+      options = CLI::Options.parse([])
+      assert_empty options.exclusively
+    end
+
+    def test_allows_exclusive_groups_to_be_specified_as_comma_separated
+      options = CLI::Options.parse(%w[--exclusively=development,test])
+      assert_equal %i[development test], options.exclusively
+    end
+
+    def test_dash_capital_d_is_a_shortcut_for_exclusively_development_test
+      options = CLI::Options.parse(%w[-D])
+      assert_equal %i[development test], options.exclusively
+    end
+
     def test_raises_exception_when_given_a_positional_argment
       error = assert_raises(BundleUpdateInteractive::Error) do
         CLI::Options.parse(%w[hello])

@@ -10,9 +10,9 @@ module BundleUpdateInteractive
     autoload :Table, "bundle_update_interactive/cli/table"
 
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
-      Options.parse(argv)
+      options = Options.parse(argv)
 
-      report = generate_report
+      report = generate_report(options)
       puts("No gems to update.").then { return } if report.updateable_gems.empty?
 
       puts
@@ -44,9 +44,9 @@ module BundleUpdateInteractive
       LEGEND
     end
 
-    def generate_report
+    def generate_report(options)
       whisper "Resolving latest gem versions..."
-      report = Report.generate
+      report = Report.generate(groups: options.exclusively)
       updateable_gems = report.updateable_gems
       return report if updateable_gems.empty?
 

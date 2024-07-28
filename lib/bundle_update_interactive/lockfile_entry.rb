@@ -4,10 +4,10 @@ module BundleUpdateInteractive
   class LockfileEntry
     attr_reader :spec, :exact_dependencies
 
-    def initialize(spec, exact_dependencies, exact_dependency)
+    def initialize(spec, exact_dependencies, exact_requirement)
       @spec = spec
       @exact_dependencies = exact_dependencies
-      @exact_dependency = exact_dependency
+      @exact_requirement = exact_requirement
     end
 
     def name
@@ -28,8 +28,8 @@ module BundleUpdateInteractive
       end
     end
 
-    def exact_dependency?
-      @exact_dependency
+    def exact_requirement?
+      @exact_requirement
     end
 
     def git_version
