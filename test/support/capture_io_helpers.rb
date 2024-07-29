@@ -3,7 +3,7 @@
 require "stringio"
 require "tty/prompt/test"
 
-module CLITestHelpers
+module CaptureIOHelpers
   private
 
   # Patch Minitest's capture_io to make it compatible with TTY::Prompt
@@ -37,4 +37,4 @@ module CLITestHelpers
   end
 end
 
-Minitest::Test.prepend(CLITestHelpers)
+Minitest::Test.prepend(CaptureIOHelpers)
