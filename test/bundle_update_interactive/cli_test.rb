@@ -41,7 +41,7 @@ module BundleUpdateInteractive
 
     def test_shows_interactive_list_of_gems_and_updates_the_selected_ones
       stdout, stderr, status = Dir.chdir(File.expand_path("../fixtures", __dir__)) do
-        use_vcr_cassette("test_shows_interactive_list_of_gems_and_updates_the_selected_ones") do
+        VCR.use_cassette("changelog_requests") do
           updated_lockfile = File.read("Gemfile.lock.updated")
           BundlerCommands.expects(:read_updated_lockfile).returns(updated_lockfile)
           BundlerCommands.expects(:update_gems_conservatively).with("addressable", "bigdecimal", "builder")

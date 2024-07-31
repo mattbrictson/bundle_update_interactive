@@ -8,7 +8,7 @@ require "bundler/audit/scanner"
 module BundleUpdateInteractive
   class ReportTest < Minitest::Test
     def test_generate_creates_a_report_of_updatable_gems_that_can_be_rendered_as_a_table
-      use_vcr_cassette("test_generate_creates_a_report_of_updatable_gems_that_can_be_rendered_as_a_table") do
+      VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.updated")
           BundlerCommands.expects(:read_updated_lockfile).with.returns(updated_lockfile)
@@ -24,7 +24,7 @@ module BundleUpdateInteractive
     end
 
     def test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups
-      use_vcr_cassette("test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups") do
+      VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.development-test-updated")
           BundlerCommands.expects(:read_updated_lockfile).with(

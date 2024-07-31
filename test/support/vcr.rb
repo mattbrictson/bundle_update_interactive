@@ -12,16 +12,3 @@ VCR.configure do |config|
     record_on_error: false
   }
 end
-
-module UseVCRCassette
-  private
-
-  def use_vcr_cassette(name, options={}, &block)
-    class_parts = self.class.name.split("::")
-    cassette_path = [*class_parts.map { |s| s.gsub(/[^A-Z0-9]+/i, "_") }, name].join("/")
-
-    VCR.use_cassette(cassette_path, options, &block)
-  end
-end
-
-Minitest::Test.include(UseVCRCassette)
