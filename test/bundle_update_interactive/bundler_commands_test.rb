@@ -1,25 +1,33 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "bundler"
 
 module BundleUpdateInteractive
   class BundlerCommandsTest < Minitest::Test
+    def setup
+      Gem.stubs(:bin_path).with("bundler", "bundle", Bundler::VERSION).returns("/exe/bundle")
+    end
+
     def test_read_updated_lockfile_runs_bundle_lock_and_captures_output
-      expect_backticks("bundle lock --print --update", captures: "bundler output")
+      expect_backticks("/exe/bundle lock --print --update", captures: "bundler output")
       result = BundlerCommands.read_updated_lockfile
 
       assert_equal "bundler output", result
     end
 
     def test_read_updated_lockfile_runs_bundle_lock_with_specified_gems_conservatively
-      expect_backticks("bundle lock --print --conservative --update actionpack railties", captures: "bundler output")
+      expect_backticks(
+        "/exe/bundle lock --print --conservative --update actionpack railties",
+        captures: "bundler output"
+      )
       result = BundlerCommands.read_updated_lockfile("actionpack", "railties")
 
       assert_equal "bundler output", result
     end
 
     def test_read_updated_lockfile_raises_if_bundler_fails_to_run
-      expect_backticks("bundle lock --print --update", success: false)
+      expect_backticks("/exe/bundle lock --print --update", success: false)
 
       error = assert_raises(RuntimeError) { BundlerCommands.read_updated_lockfile }
       assert_match(/bundle lock command failed/i, error.message)
