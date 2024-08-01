@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "faraday"
 require "json"
 
 module BundleUpdateInteractive
@@ -32,16 +31,16 @@ module BundleUpdateInteractive
         return "https://github.com/#{changelog_path}" if changelog_path
 
         releases_url = "https://github.com/#{path}/releases"
-        releases_url if Faraday.head("#{releases_url}/tag/v#{version}").success?
+        releases_url if HTTP.head("#{releases_url}/tag/v#{version}").success?
       end
 
       private
 
       def fetch_repo_html(follow_redirect:)
-        response = Faraday.get("https://github.com/#{path}")
+        response = HTTP.get("https://github.com/#{path}")
 
-        if response.status == 301 && follow_redirect
-          @path = response.headers["Location"][GITHUB_PATTERN, 1]
+        if response.code == "301" && follow_redirect
+          @path = response["Location"][GITHUB_PATTERN, 1]
           return fetch_repo_html(follow_redirect: false)
         end
 
@@ -69,7 +68,7 @@ module BundleUpdateInteractive
                   "https://rubygems.org/api/v2/rubygems/#{name}/versions/#{version}.json"
                 end
 
-      response = Faraday.get(api_url)
+      response = HTTP.get(api_url)
 
       # Try again without the version in case the version does not exist at rubygems for some reason.
       # This can happen when using a pre-release Ruby that has a bundled gem newer than the published version.

@@ -8,6 +8,7 @@ module BundleUpdateInteractive
   autoload :CLI, "bundle_update_interactive/cli"
   autoload :Error, "bundle_update_interactive/error"
   autoload :Gemfile, "bundle_update_interactive/gemfile"
+  autoload :HTTP, "bundle_update_interactive/http"
   autoload :Lockfile, "bundle_update_interactive/lockfile"
   autoload :LockfileEntry, "bundle_update_interactive/lockfile_entry"
   autoload :OutdatedGem, "bundle_update_interactive/outdated_gem"
