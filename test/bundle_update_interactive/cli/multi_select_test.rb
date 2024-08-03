@@ -11,11 +11,11 @@ class BundleUpdateInteractive::CLI
     CTRL_R = "\u0012"
 
     def setup
-      @table = Table.new(
+      @outdated_gems = {
         "a" => build(:outdated_gem, name: "a", rubygems_source: false),
         "b" => build(:outdated_gem, name: "b", rubygems_source: false),
         "c" => build(:outdated_gem, name: "c", rubygems_source: false)
-      )
+      }
     end
 
     def test_pressing_a_selects_all_rows
@@ -74,8 +74,8 @@ class BundleUpdateInteractive::CLI
       prompt.input << "\n"
       prompt.input.rewind
 
-      multi_select = MultiSelect.new(title: "", table: @table, prompt: prompt)
-      multi_select.prompt
+      selected = MultiSelect.prompt_for_gems_to_update(@outdated_gems, prompt: prompt)
+      selected.keys
     end
   end
 end

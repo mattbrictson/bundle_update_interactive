@@ -38,10 +38,10 @@ class BundleUpdateInteractive::CLI
       end
     end
 
-    def self.prompt_for_gems_to_update(outdated_gems)
+    def self.prompt_for_gems_to_update(outdated_gems, prompt: nil)
       table = Table.new(outdated_gems)
       title = "#{outdated_gems.length} gems can be updated."
-      chosen = new(title: title, table: table).prompt
+      chosen = new(title: title, table: table, prompt: prompt).prompt
       outdated_gems.slice(*chosen)
     end
 
