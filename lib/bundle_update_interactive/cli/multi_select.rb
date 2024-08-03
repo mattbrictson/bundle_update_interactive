@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "launchy"
 require "pastel"
 require "tty/prompt"
 require "tty/screen"
@@ -8,6 +9,7 @@ class BundleUpdateInteractive::CLI
   class MultiSelect
     class List < TTY::Prompt::MultiList
       def initialize(prompt, **options)
+        @opener = options.delete(:opener)
         defaults = {
           cycle: true,
           help_color: :itself.to_proc,
@@ -34,20 +36,30 @@ class BundleUpdateInteractive::CLI
         when "j", "n" then keydown
         when "a" then select_all
         when "r" then reverse_selection
+        when "o" then opener&.call(choices[@active - 1].value)
         end
       end
+
+      private
+
+      attr_reader :opener
     end
 
     def self.prompt_for_gems_to_update(outdated_gems, prompt: nil)
       table = Table.new(outdated_gems)
       title = "#{outdated_gems.length} gems can be updated."
-      chosen = new(title: title, table: table, prompt: prompt).prompt
+      opener = lambda do |gem|
+        url = outdated_gems[gem].changelog_uri
+        Launchy.open(url) unless url.nil?
+      end
+      chosen = new(title: title, table: table, prompt: prompt, opener: opener).prompt
       outdated_gems.slice(*chosen)
     end
 
-    def initialize(title:, table:, prompt: nil)
+    def initialize(title:, table:, opener: nil, prompt: nil)
       @title = title
       @table = table
+      @opener = opener
       @tty_prompt = prompt || TTY::Prompt.new(
         interrupt: lambda {
           puts
@@ -59,16 +71,16 @@ class BundleUpdateInteractive::CLI
 
     def prompt
       choices = table.gem_names.to_h { |name| [table.render_gem(name), name] }
-      tty_prompt.invoke_select(List, title, choices, help: help)
+      tty_prompt.invoke_select(List, title, choices, help: help, opener: opener)
     end
 
     private
 
-    attr_reader :pastel, :table, :tty_prompt, :title
+    attr_reader :pastel, :table, :opener, :tty_prompt, :title
 
     def help
       [
-        pastel.dim("\nPress <space> to select, ↑/↓ move, <a> all, <r> reverse, <enter> to finish."),
+        pastel.dim("\nPress <space> to select, ↑/↓ move, <a> all, <r> reverse, <o> open url, <enter> to finish."),
         "\n    ",
         table.render_header
       ].join

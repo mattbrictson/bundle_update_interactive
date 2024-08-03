@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   # Runtime dependencies
   spec.add_dependency "bundler", "~> 2.0"
   spec.add_dependency "bundler-audit", ">= 0.9.1"
+  spec.add_dependency "launchy", ">= 2.5.0"
   spec.add_dependency "pastel", ">= 0.8.0"
   spec.add_dependency "tty-prompt", ">= 0.23.1"
   spec.add_dependency "tty-screen", ">= 0.8.2"
