@@ -9,7 +9,7 @@ module BundleUpdateInteractive
         CLI::Options.parse(%w[-h])
       end
 
-      assert_match(/usage:/i, stdout)
+      assert_match(/usage/i, stdout)
       assert_equal(0, status)
     end
 
@@ -18,7 +18,7 @@ module BundleUpdateInteractive
         CLI::Options.parse(%w[--help])
       end
 
-      assert_match(/usage:/i, stdout)
+      assert_match(/usage/i, stdout)
       assert_equal(0, status)
     end
 
