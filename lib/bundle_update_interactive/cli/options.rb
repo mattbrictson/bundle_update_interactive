@@ -13,30 +13,70 @@ module BundleUpdateInteractive
         options.freeze
       end
 
+      def summary
+        build_parser(new).summarize.join.gsub(/^\s+-.*?  /, pastel.yellow('\0'))
+      end
+
+      def help # rubocop:disable Metrics/AbcSize
+        <<~HELP
+          Provides an easy way to update gems to their latest versions.
+
+          #{pastel.bold.underline('USAGE')}
+            #{pastel.green('bundle update-interactive')} #{pastel.yellow('[options]')}
+            #{pastel.green('bundle ui')} #{pastel.yellow('[options]')}
+
+          #{pastel.bold.underline('OPTIONS')}
+          #{summary}
+          #{pastel.bold.underline('DESCRIPTION')}
+            Displays the list of gems that would be updated by `bundle update`, allowing you
+            to navigate them by keyboard and pick which ones to update. A changelog URL,
+            when available, is displayed alongside each update. Gems with known security
+            vulnerabilities are also highlighted.
+
+            Your Gemfile.lock will be updated conservatively based on the gems you select.
+            Transitive dependencies are not affected.
+
+            More information: #{pastel.blue('https://github.com/mattbrictson/bundle_update_interactive')}
+
+          #{pastel.bold.underline('EXAMPLES')}
+            Show all gems that can be updated.
+            #{pastel.green('bundle update-interactive')}
+
+            The "ui" command alias can also be used.
+            #{pastel.green('bundle ui')}
+
+            Show updates for development and test gems only, leaving production gems untouched.
+            #{pastel.green('bundle update-interactive')} #{pastel.yellow('-D')}
+
+        HELP
+      end
+
       private
 
-      def build_parser(options) # rubocop:disable Metrics/MethodLength
+      def pastel
+        BundleUpdateInteractive.pastel
+      end
+
+      def build_parser(options) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         OptionParser.new do |parser|
-          parser.banner = "Usage: bundle update-interactive"
+          parser.summary_indent = "  "
+          parser.summary_width = 24
           parser.on(
             "--exclusively=GROUP",
-            "Update gems that exclusively belong to the specified Gemfile GROUP(s) (comma-separated)"
+            "Update gems exclusively belonging to the specified Gemfile GROUP(s)"
           ) do |value|
             options.exclusively = value.split(",").map(&:strip).reject(&:empty?).map(&:to_sym)
           end
-          parser.on(
-            "-D",
-            "Update development and test gems only; short for --exclusively=development,test"
-          ) do
+          parser.on("-D", "Shorthand for --exclusively=development,test") do
             options.exclusively = %i[development test]
           end
-          parser.on("-v", "--version", "Display bundle_update_interactive version") do
+          parser.on("-v", "--version", "Display version") do
             require "bundler"
             puts "bundle_update_interactive/#{VERSION} bundler/#{Bundler::VERSION} #{RUBY_DESCRIPTION}"
             exit
           end
           parser.on("-h", "--help", "Show this help") do
-            puts parser
+            puts help
             exit
           end
         end

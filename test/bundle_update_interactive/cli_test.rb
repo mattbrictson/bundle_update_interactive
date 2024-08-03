@@ -9,7 +9,7 @@ module BundleUpdateInteractive
         CLI.new.run(argv: %w[--help])
       end
 
-      assert_match(/usage:/i, stdout)
+      assert_match(/usage/i, stdout)
       assert_empty(stderr)
       assert_equal(0, status)
     end
