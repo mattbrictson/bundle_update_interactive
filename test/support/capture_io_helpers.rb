@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
 require "stringio"
+require "tty/prompt/test"
 
-module CLITestHelpers
+module CaptureIOHelpers
   private
+
+  # Patch Minitest's capture_io to make it compatible with TTY::Prompt
+  def capture_io
+    super do
+      $stdout.extend(TTY::Prompt::StringIOExtensions) if $stdout.is_a?(StringIO)
+      yield
+    end
+  end
 
   def capture_io_and_exit_status(stdin_data: "")
     orig_stdin = $stdin
@@ -28,4 +37,4 @@ module CLITestHelpers
   end
 end
 
-Minitest::Test.include(CLITestHelpers)
+Minitest::Test.prepend(CaptureIOHelpers)
