@@ -33,6 +33,20 @@ module BundleUpdateInteractive
       assert_match(/bundle lock command failed/i, error.message)
     end
 
+    def test_read_updated_lockfile_runs_bundle_lock_with_patch_option
+      expect_backticks("/exe/bundle lock --print --patch --update", captures: "bundler output")
+      result = BundlerCommands.read_updated_lockfile(level: :patch)
+
+      assert_equal "bundler output", result
+    end
+
+    def test_read_updated_lockfile_runs_bundle_lock_with_minor_option
+      expect_backticks("/exe/bundle lock --print --minor --update", captures: "bundler output")
+      result = BundlerCommands.read_updated_lockfile(level: :minor)
+
+      assert_equal "bundler output", result
+    end
+
     private
 
     def expect_backticks(command, captures: "", success: true)

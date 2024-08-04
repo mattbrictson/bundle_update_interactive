@@ -11,7 +11,7 @@ module BundleUpdateInteractive
       VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.updated")
-          BundlerCommands.expects(:read_updated_lockfile).with.returns(updated_lockfile)
+          BundlerCommands.expects(:read_updated_lockfile).with(level: nil).returns(updated_lockfile)
           mock_vulnerable_gems("actionpack", "rexml", "devise")
 
           report = Report.generate
@@ -24,7 +24,7 @@ module BundleUpdateInteractive
     end
 
     def test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups
-      VCR.use_cassette("changelog_requests") do
+      VCR.use_cassette("changelog_requests") do # rubocop:disable Metrics/BlockLength
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.development-test-updated")
           BundlerCommands.expects(:read_updated_lockfile).with(
@@ -42,7 +42,8 @@ module BundleUpdateInteractive
               web-console
               websocket
               xpath
-            ]
+            ],
+            level: nil
           ).returns(updated_lockfile)
           mock_vulnerable_gems("actionpack", "rexml", "devise")
 

@@ -40,6 +40,24 @@ module BundleUpdateInteractive
       assert_equal(0, status)
     end
 
+    def test_allows_patch_option_to_be_specified
+      options = CLI::Options.parse(%w[--patch])
+      assert_equal :patch, options.level
+    end
+
+    def test_allows_minor_option_to_be_specified
+      options = CLI::Options.parse(%w[--patch])
+      assert_equal :patch, options.level
+    end
+
+    def test_raises_if_both_minor_and_patch_options_are_specified
+      error = assert_raises(BundleUpdateInteractive::Error) do
+        CLI::Options.parse(%w[--patch --minor])
+      end
+
+      assert_match(/specify EITHER --patch or --minor option/i, error.message)
+    end
+
     def test_exclusively_is_empty_array_by_default
       options = CLI::Options.parse([])
       assert_empty options.exclusively

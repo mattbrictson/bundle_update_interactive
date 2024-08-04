@@ -87,6 +87,22 @@ https://github.com/rails/rails/compare/5a8d894...77dfa65
 
 This feature currently works for GitHub, GitLab, and Bitbucket repos.
 
+### Limit updates by version type
+
+In order to reduce the risks of an update, `bundle update-interactive` can be limited to either patch or minor level updates with the `--patch` and `--minor` options.
+
+```sh
+# Limit updates to patch version changes (exclude minor and major updates)
+bundle update-interactive --patch
+
+# Limit updates to patch and minor version changes (exclude major updates)
+bundle update-interactive --minor
+```
+
+For example, consider a lock file that currently has rack 2.0.3. The latest version of rack is 3.1.7, but updating by a major version is risky. Instead, we'd like to update to the latest 2.0.x version first, which is 2.0.9. We can accomplish this with the `--patch` option.
+
+Once this update is successful, we might wish to update rack from 2.0.9 to the last 2.x version, 2.2.9, before going to version 3. We can accomplish this with the `--minor` option.
+
 ### Limit impact by Gemfile groups
 
 The effects of `bundle update-interactive` can be limited to one or more Gemfile groups using the `--exclusively` option:

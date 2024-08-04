@@ -6,13 +6,19 @@ require "shellwords"
 module BundleUpdateInteractive
   module BundlerCommands
     class << self
-      def update_gems_conservatively(*gems)
-        system "#{bundle_bin.shellescape} update --conservative #{gems.flatten.map(&:shellescape).join(' ')}"
+      def update_gems_conservatively(*gems, level: nil)
+        command = ["#{bundle_bin.shellescape} update"]
+        command << "--minor" if level == :minor
+        command << "--patch" if level == :patch
+        command.push("--conservative #{gems.flatten.map(&:shellescape).join(' ')}")
+        system command.join(" ")
       end
 
-      def read_updated_lockfile(*gems)
+      def read_updated_lockfile(*gems, level: nil)
         command = ["#{bundle_bin.shellescape} lock --print"]
         command << "--conservative" if gems.any?
+        command << "--minor" if level == :minor
+        command << "--patch" if level == :patch
         command << "--update"
         command.push(*gems.flatten.map(&:shellescape))
 
