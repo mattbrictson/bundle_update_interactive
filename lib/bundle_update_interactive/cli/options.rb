@@ -58,7 +58,7 @@ module BundleUpdateInteractive
       end
 
       def build_parser(options) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-        OptionParser.new do |parser|
+        OptionParser.new do |parser| # rubocop:disable Metrics/BlockLength
           parser.summary_indent = "  "
           parser.summary_width = 24
           parser.on(
@@ -69,6 +69,16 @@ module BundleUpdateInteractive
           end
           parser.on("-D", "Shorthand for --exclusively=development,test") do
             options.exclusively = %i[development test]
+          end
+          parser.on("-m", "--minor", "Only update to the latest minor version") do
+            raise Error, "Please specify EITHER --patch or --minor option, not both" unless options.level.nil?
+
+            options.level = :minor
+          end
+          parser.on("-p", "--patch", "Only update to the latest patch version") do
+            raise Error, "Please specify EITHER --patch or --minor option, not both" unless options.level.nil?
+
+            options.level = :patch
           end
           parser.on("-v", "--version", "Display version") do
             require "bundler"
@@ -83,7 +93,7 @@ module BundleUpdateInteractive
       end
     end
 
-    attr_accessor :exclusively
+    attr_accessor :exclusively, :level
 
     def initialize
       @exclusively = []

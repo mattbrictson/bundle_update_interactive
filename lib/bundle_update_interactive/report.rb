@@ -8,19 +8,28 @@ require "set"
 module BundleUpdateInteractive
   class Report
     class << self
-      def generate(groups: [])
+      def generate(groups: [], level: nil)
         gemfile = Gemfile.parse
         current_lockfile = Lockfile.parse
         gems = groups.any? ? current_lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: groups) : nil
 
-        updated_lockfile = gems&.none? ? nil : Lockfile.parse(BundlerCommands.read_updated_lockfile(*Array(gems)))
-        new(gemfile: gemfile, current_lockfile: current_lockfile, updated_lockfile: updated_lockfile)
+        updated_lockfile = if gems&.none?
+                             nil
+                           else
+                             Lockfile.parse(
+                               BundlerCommands.read_updated_lockfile(
+                                 *Array(gems),
+                                 level: level
+                               )
+                             )
+                           end
+        new(gemfile: gemfile, current_lockfile: current_lockfile, updated_lockfile: updated_lockfile, level: level)
       end
     end
 
     attr_reader :outdated_gems
 
-    def initialize(gemfile:, current_lockfile:, updated_lockfile:)
+    def initialize(gemfile:, current_lockfile:, updated_lockfile:, level:)
       @current_lockfile = current_lockfile
       @outdated_gems = current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
         name = current_lockfile_entry.name
@@ -29,6 +38,7 @@ module BundleUpdateInteractive
 
         hash[name] = build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile[name]&.groups)
       end.freeze
+      @level = level
     end
 
     def [](gem_name)
@@ -61,7 +71,7 @@ module BundleUpdateInteractive
 
     def bundle_update!(*gem_names)
       expanded_names = expand_gems_with_exact_dependencies(*gem_names)
-      BundlerCommands.update_gems_conservatively(*expanded_names)
+      BundlerCommands.update_gems_conservatively(*expanded_names, level: @level)
     end
 
     private
