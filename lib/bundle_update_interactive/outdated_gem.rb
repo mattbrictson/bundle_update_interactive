@@ -10,7 +10,7 @@ module BundleUpdateInteractive
                   :updated_version,
                   :updated_git_version
 
-    attr_writer :rubygems_source, :vulnerable
+    attr_writer :changelog_uri, :rubygems_source, :vulnerable
 
     def initialize(**attrs)
       @vulnerable = nil

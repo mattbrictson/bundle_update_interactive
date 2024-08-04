@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "launchy"
 require "tty/prompt/test"
 
 class BundleUpdateInteractive::CLI
@@ -12,9 +13,9 @@ class BundleUpdateInteractive::CLI
 
     def setup
       @outdated_gems = {
-        "a" => build(:outdated_gem, name: "a", rubygems_source: false),
-        "b" => build(:outdated_gem, name: "b", rubygems_source: false),
-        "c" => build(:outdated_gem, name: "c", rubygems_source: false)
+        "a" => build(:outdated_gem, name: "a", changelog_uri: nil),
+        "b" => build(:outdated_gem, name: "b", changelog_uri: "https://b.example.com/"),
+        "c" => build(:outdated_gem, name: "c", changelog_uri: "https://c.example.com/")
       }
     end
 
@@ -64,6 +65,18 @@ class BundleUpdateInteractive::CLI
       selected = use_menu_with_keypress CTRL_R
 
       assert_empty selected
+    end
+
+    def test_pressing_down_then_o_opens_changelog_uri_of_second_gem_in_browser
+      Launchy.expects(:open).with("https://b.example.com/").once
+
+      use_menu_with_keypress ARROW_DOWN, "o"
+    end
+
+    def test_pressing_o_for_gem_with_no_changelog_does_nothing
+      Launchy.expects(:open).never
+
+      use_menu_with_keypress "o"
     end
 
     private
