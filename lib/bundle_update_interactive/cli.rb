@@ -23,7 +23,7 @@ module BundleUpdateInteractive
 
       puts "\nUpdating the following gems."
       puts
-      puts Table.new(selected_gems).render
+      puts Table.updatable(selected_gems).render
       puts
       report.bundle_update!(*selected_gems.keys)
     rescue Exception => e # rubocop:disable Lint/RescueException

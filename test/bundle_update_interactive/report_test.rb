@@ -17,7 +17,7 @@ module BundleUpdateInteractive
           report = Report.generate
           report.scan_for_vulnerabilities!
 
-          gem_update_table = CLI::Table.new(report.updateable_gems).render
+          gem_update_table = CLI::Table.updatable(report.updateable_gems).render
           assert_matches_snapshot(gem_update_table)
         end
       end
@@ -49,7 +49,7 @@ module BundleUpdateInteractive
           report = Report.generate(groups: %i[development test])
           report.scan_for_vulnerabilities!
 
-          gem_update_table = CLI::Table.new(report.updateable_gems).render
+          gem_update_table = CLI::Table.updatable(report.updateable_gems).render
           assert_matches_snapshot(gem_update_table)
         end
       end
