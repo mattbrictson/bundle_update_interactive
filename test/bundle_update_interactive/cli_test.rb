@@ -28,7 +28,7 @@ module BundleUpdateInteractive
 
     def test_returns_if_no_gems_to_update
       empty_report = mock
-      empty_report.expects(:updateable_gems).at_least_once.returns({})
+      empty_report.expects(:updatable_gems).at_least_once.returns({})
       Report.expects(:generate).returns(empty_report)
 
       stdout, stderr = capture_io do

@@ -13,12 +13,12 @@ module BundleUpdateInteractive
       options = Options.parse(argv)
 
       report = generate_report(options)
-      puts("No gems to update.").then { return } if report.updateable_gems.empty?
+      puts("No gems to update.").then { return } if report.updatable_gems.empty?
 
       puts
       puts legend
       puts
-      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updateable_gems)
+      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updatable_gems)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
       puts "\nUpdating the following gems."
@@ -47,13 +47,13 @@ module BundleUpdateInteractive
     def generate_report(options)
       whisper "Resolving latest gem versions..."
       report = Report.generate(groups: options.exclusively)
-      updateable_gems = report.updateable_gems
-      return report if updateable_gems.empty?
+      updatable_gems = report.updatable_gems
+      return report if updatable_gems.empty?
 
       whisper "Checking for security vulnerabilities..."
       report.scan_for_vulnerabilities!
 
-      progress "Finding changelogs", updateable_gems.values, &:changelog_uri
+      progress "Finding changelogs", updatable_gems.values, &:changelog_uri
       report
     end
 

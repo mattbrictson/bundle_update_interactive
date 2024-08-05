@@ -35,8 +35,8 @@ module BundleUpdateInteractive
       outdated_gems[gem_name]
     end
 
-    def updateable_gems
-      @updateable_gems ||= outdated_gems.reject do |name, _|
+    def updatable_gems
+      @updatable_gems ||= outdated_gems.reject do |name, _|
         current_lockfile[name].exact_requirement?
       end.freeze
     end
