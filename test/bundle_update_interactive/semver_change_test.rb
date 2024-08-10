@@ -3,9 +3,19 @@
 require "test_helper"
 
 module BundleUpdateInteractive
-  class SemverTest < Minitest::Test
+  class SemverChangeTest < Minitest::Test
     def test_prerelease_is_considered_patch
       change = SemverChange.new("7.2.0.beta2", "7.2.0.beta3")
+
+      assert_equal :patch, change.severity
+      assert_predicate change, :patch?
+
+      refute_predicate change, :minor?
+      refute_predicate change, :major?
+    end
+
+    def test_prerelease_to_final_is_considered_patch
+      change = SemverChange.new("7.2.0.rc1", "7.2.0")
 
       assert_equal :patch, change.severity
       assert_predicate change, :patch?
@@ -61,6 +71,12 @@ module BundleUpdateInteractive
       assert_equal "2.<1.6>", SemverChange.new("2.0.9", "2.1.6").format(&formatter)
       assert_equal "2.1.<6>", SemverChange.new("2.1.5", "2.1.6").format(&formatter)
       assert_equal "2.1.6.<1>", SemverChange.new("2.1.6", "2.1.6.1").format(&formatter)
+    end
+
+    def test_format_doesnt_apply_to_final_release
+      formatter = ->(str) { "<#{str}>" }
+
+      assert_equal "7.2.0", SemverChange.new("7.2.0.rc1", "7.2.0").format(&formatter)
     end
 
     def test_none_is_true_when_versions_are_identical

@@ -10,10 +10,12 @@ module BundleUpdateInteractive
 
       @same_segments = new_segments.take_while.with_index { |seg, i| seg == old_segments[i] }
       @diff_segments = new_segments[same_segments.length..]
+
+      @changed = diff_segments.any? || old_segments.length != new_segments.length
     end
 
     def severity
-      return nil if diff_segments.empty?
+      return nil unless @changed
 
       SEVERITIES[same_segments.length] || :patch
     end
