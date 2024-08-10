@@ -46,7 +46,7 @@ module BundleUpdateInteractive
 
     def generate_report(options)
       whisper "Resolving latest gem versions..."
-      report = Report.generate(groups: options.exclusively)
+      report = Report.generate(groups: options.exclusively, level: options.level)
       updateable_gems = report.updateable_gems
       return report if updateable_gems.empty?
 

@@ -44,7 +44,7 @@ module BundleUpdateInteractive
         VCR.use_cassette("changelog_requests") do
           updated_lockfile = File.read("Gemfile.lock.updated")
           BundlerCommands.expects(:read_updated_lockfile).returns(updated_lockfile)
-          BundlerCommands.expects(:update_gems_conservatively).with("addressable", "bigdecimal", "builder")
+          BundlerCommands.expects(:update_gems_conservatively).with("addressable", "bigdecimal", "builder", level: nil)
           mock_vulnerable_gems([])
 
           stdin_data = " j j \n" # SPACE,DOWN,SPACE,DOWN,SPACE,ENTER selects first three gems to update
