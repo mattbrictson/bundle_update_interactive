@@ -46,14 +46,13 @@ module BundleUpdateInteractive
 
     def generate_report(options)
       whisper "Resolving latest gem versions..."
-      report = Report.generate(groups: options.exclusively)
-      updatable_gems = report.updatable_gems
-      return report if updatable_gems.empty?
+      report = Reporter.new(groups: options.exclusively).generate_report
+      return report if report.empty?
 
       whisper "Checking for security vulnerabilities..."
       report.scan_for_vulnerabilities!
 
-      progress "Finding changelogs", updatable_gems.values, &:changelog_uri
+      progress "Finding changelogs", report.updatable_gems.values, &:changelog_uri
       report
     end
 

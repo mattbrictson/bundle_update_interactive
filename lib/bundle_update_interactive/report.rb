@@ -7,38 +7,15 @@ require "set"
 
 module BundleUpdateInteractive
   class Report
-    class << self
-      def generate(groups: [])
-        gemfile = Gemfile.parse
-        current_lockfile = Lockfile.parse
-        gems = groups.any? ? current_lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: groups) : nil
+    attr_reader :updatable_gems
 
-        updated_lockfile = gems&.none? ? nil : Lockfile.parse(BundlerCommands.read_updated_lockfile(*Array(gems)))
-        new(gemfile: gemfile, current_lockfile: current_lockfile, updated_lockfile: updated_lockfile)
-      end
-    end
-
-    attr_reader :outdated_gems
-
-    def initialize(gemfile:, current_lockfile:, updated_lockfile:)
+    def initialize(current_lockfile:, updatable_gems:)
       @current_lockfile = current_lockfile
-      @outdated_gems = current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
-        name = current_lockfile_entry.name
-        updated_lockfile_entry = updated_lockfile && updated_lockfile[name]
-        next unless current_lockfile_entry.older_than?(updated_lockfile_entry)
-
-        hash[name] = build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile[name]&.groups)
-      end.freeze
+      @updatable_gems = updatable_gems.freeze
     end
 
-    def [](gem_name)
-      outdated_gems[gem_name]
-    end
-
-    def updatable_gems
-      @updatable_gems ||= outdated_gems.reject do |name, _|
-        current_lockfile[name].exact_requirement?
-      end.freeze
+    def empty?
+      updatable_gems.empty?
     end
 
     def expand_gems_with_exact_dependencies(*gem_names)
@@ -47,13 +24,13 @@ module BundleUpdateInteractive
     end
 
     def scan_for_vulnerabilities!
-      return false if outdated_gems.empty?
+      return false if empty?
 
       Bundler::Audit::Database.update!(quiet: true)
       audit_report = Bundler::Audit::Scanner.new.report
       vulnerable_gem_names = Set.new(audit_report.vulnerable_gems.map(&:name))
 
-      outdated_gems.each do |name, gem|
+      updatable_gems.each do |name, gem|
         gem.vulnerable = (vulnerable_gem_names & [name, *current_lockfile[name].exact_dependencies]).any?
       end
       true
@@ -67,18 +44,5 @@ module BundleUpdateInteractive
     private
 
     attr_reader :current_lockfile
-
-    def build_outdated_gem(current_lockfile_entry, updated_lockfile_entry, gemfile_groups)
-      OutdatedGem.new(
-        name: current_lockfile_entry.name,
-        gemfile_groups: gemfile_groups,
-        rubygems_source: updated_lockfile_entry.rubygems_source?,
-        git_source_uri: updated_lockfile_entry.git_source_uri&.to_s,
-        current_version: current_lockfile_entry.version.to_s,
-        current_git_version: current_lockfile_entry.git_version&.strip,
-        updated_version: updated_lockfile_entry.version.to_s,
-        updated_git_version: updated_lockfile_entry.git_version&.strip
-      )
-    end
   end
 end

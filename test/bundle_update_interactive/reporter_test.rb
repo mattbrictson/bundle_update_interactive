@@ -6,15 +6,15 @@ require "bundler/audit"
 require "bundler/audit/scanner"
 
 module BundleUpdateInteractive
-  class ReportTest < Minitest::Test
-    def test_generate_creates_a_report_of_updatable_gems_that_can_be_rendered_as_a_table
+  class ReporterTest < Minitest::Test
+    def test_generates_a_report_of_updatable_gems_that_can_be_rendered_as_a_table
       VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.updated")
           BundlerCommands.expects(:read_updated_lockfile).with.returns(updated_lockfile)
           mock_vulnerable_gems("actionpack", "rexml", "devise")
 
-          report = Report.generate
+          report = Reporter.new.generate_report
           report.scan_for_vulnerabilities!
 
           gem_update_table = CLI::Table.updatable(report.updatable_gems).render
@@ -23,7 +23,7 @@ module BundleUpdateInteractive
       end
     end
 
-    def test_generate_creates_a_report_of_updatable_gems_for_development_and_test_groups
+    def test_generates_a_report_of_updatable_gems_for_development_and_test_groups
       VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.development-test-updated")
@@ -46,7 +46,7 @@ module BundleUpdateInteractive
           ).returns(updated_lockfile)
           mock_vulnerable_gems("actionpack", "rexml", "devise")
 
-          report = Report.generate(groups: %i[development test])
+          report = Reporter.new(groups: %i[development test]).generate_report
           report.scan_for_vulnerabilities!
 
           gem_update_table = CLI::Table.updatable(report.updatable_gems).render
@@ -55,9 +55,9 @@ module BundleUpdateInteractive
       end
     end
 
-    def test_generate_returns_empty_report_when_given_non_existent_group
+    def test_generates_empty_report_when_given_non_existent_group
       Dir.chdir(File.expand_path("../fixtures", __dir__)) do
-        report = Report.generate(groups: [:assets])
+        report = Reporter.new(groups: [:assets]).generate_report
 
         assert_empty report.updatable_gems
       end

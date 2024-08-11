@@ -15,7 +15,7 @@ module BundleUpdateInteractive
     end
 
     def test_prints_error_in_red_to_stderr_and_exits_with_failure_status
-      Report.expects(:generate).raises(Error, "something went wrong")
+      Reporter.expects(:new).raises(Error, "something went wrong")
 
       stdout, stderr, status = capture_io_and_exit_status do
         CLI.new.run(argv: [])
@@ -27,9 +27,8 @@ module BundleUpdateInteractive
     end
 
     def test_returns_if_no_gems_to_update
-      empty_report = mock
-      empty_report.expects(:updatable_gems).at_least_once.returns({})
-      Report.expects(:generate).returns(empty_report)
+      empty_report = mock(empty?: true, updatable_gems: {})
+      Reporter.expects(:new).returns(mock(generate_report: empty_report))
 
       stdout, stderr = capture_io do
         CLI.new.run(argv: [])
