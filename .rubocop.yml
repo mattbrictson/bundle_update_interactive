@@ -60,6 +60,7 @@ Metrics/BlockLength:
   Exclude:
     - "*.gemspec"
     - "Rakefile"
+    - "test/**/*"
 
 Metrics/ClassLength:
   Exclude:

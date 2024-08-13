@@ -26,8 +26,8 @@ module BundleUpdateInteractive
       assert_equal(1, status)
     end
 
-    def test_returns_if_no_gems_to_update
-      empty_report = mock(empty?: true, updatable_gems: {})
+    def test_returns_if_no_gems_to_update_and_nothing_withheld
+      empty_report = stub(empty?: true, updatable_gems: {}, withheld_gems: {})
       Reporter.expects(:new).returns(mock(generate_report: empty_report))
 
       stdout, stderr = capture_io do
@@ -38,10 +38,37 @@ module BundleUpdateInteractive
       assert_equal("No gems to update.\n", stdout)
     end
 
-    def test_shows_interactive_list_of_gems_and_updates_the_selected_ones
+    def test_prints_withheld_gems_and_returns_if_nothing_to_update
+      stdout, stderr, status = Dir.chdir(File.expand_path("../fixtures", __dir__)) do
+        VCR.use_cassette("changelog_requests") do
+          unchanged_lockfile = File.read("Gemfile.lock")
+          BundlerCommands.expects(:parse_outdated).returns({ "sqlite3" => "2.0.3" })
+          BundlerCommands.expects(:read_updated_lockfile).returns(unchanged_lockfile)
+          mock_vulnerable_gems([])
+
+          capture_io_and_exit_status do
+            CLI.new.run(argv: [])
+          end
+        end
+      end
+
+      assert_equal(<<~EXPECTED_STDERR, stderr)
+        Resolving latest gem versions...
+        Checking for security vulnerabilities...
+        Finding changelogs.
+      EXPECTED_STDERR
+
+      assert_match(/The following gems are being held back and cannot be updated/, stdout)
+      assert_match(/sqlite3.*2\.0\.3/, stdout)
+      assert_match(/^No gems to update.\n\z/, stdout)
+      assert_nil(status)
+    end
+
+    def test_shows_withheld_gems_and_interactive_list_of_gems_and_updates_the_selected_ones
       stdout, stderr, status = Dir.chdir(File.expand_path("../fixtures", __dir__)) do
         VCR.use_cassette("changelog_requests") do
           updated_lockfile = File.read("Gemfile.lock.updated")
+          BundlerCommands.expects(:parse_outdated).returns({ "sqlite3" => "2.0.3" })
           BundlerCommands.expects(:read_updated_lockfile).returns(updated_lockfile)
           BundlerCommands.expects(:update_gems_conservatively).with("addressable", "bigdecimal", "builder")
           mock_vulnerable_gems([])
@@ -59,7 +86,11 @@ module BundleUpdateInteractive
         Finding changelogs..................
       EXPECTED_STDERR
 
-      _menu, selected_gems = stdout.split("Updating the following gems.")
+      menu, selected_gems = stdout.split("Updating the following gems.")
+
+      assert_match(/The following gems are being held back and cannot be updated/, menu)
+      assert_match(/sqlite3.*2\.0\.3/, menu)
+
       assert_equal(3, selected_gems.lines.grep(/→/).count)
       assert_match(/addressable/, selected_gems)
       assert_match(/bigdecimal/, selected_gems)

@@ -10,8 +10,9 @@ module BundleUpdateInteractive
 
     def generate_report
       updatable_gems = find_updatable_gems
+      withheld_gems = find_withheld_gems(exclude: updatable_gems.keys)
 
-      Report.new(current_lockfile: current_lockfile, updatable_gems: updatable_gems)
+      Report.new(current_lockfile: current_lockfile, updatable_gems: updatable_gems, withheld_gems: withheld_gems)
     end
 
     private
@@ -38,6 +39,7 @@ module BundleUpdateInteractive
       OutdatedGem.new(
         name: name,
         gemfile_groups: gemfile[name]&.groups,
+        gemfile_requirement: gemfile[name]&.requirement&.to_s,
         rubygems_source: current_lockfile_entry.rubygems_source?,
         git_source_uri: current_lockfile_entry.git_source_uri&.to_s,
         current_version: current_lockfile_entry.version.to_s,
@@ -45,6 +47,20 @@ module BundleUpdateInteractive
         updated_version: updated_version.to_s,
         updated_git_version: updated_git_version&.strip
       )
+    end
+
+    def find_withheld_gems(exclude: [])
+      possibly_withheld = gemfile.dependencies.filter_map do |dep|
+        dep.name if dep.should_include? && !dep.requirement.none? # rubocop:disable Style/InverseMethods
+      end
+      possibly_withheld -= exclude
+      possibly_withheld &= candidate_gems unless candidate_gems.nil?
+
+      return {} if possibly_withheld.empty?
+
+      BundlerCommands.parse_outdated(*possibly_withheld).to_h do |name, newest|
+        [name, build_outdated_gem(name, newest, nil)]
+      end
     end
   end
 end

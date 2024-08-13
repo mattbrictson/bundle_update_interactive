@@ -1,0 +1,3 @@
+--- "\e[2;4mname\e[0m  \e[2;4mrequirement\e[0m  \e[2;4mcurrent\e[0m  \e[2;4mlatest\e[0m
+  \ \e[2;4mgroup\e[0m     \e[2;4murl\e[0m\n\e[31mpuma\e[0m  ~> 6.4       6.4.2    \e[31m7.0.1\e[0m
+  \  :default  \e[34mhttps://github.com/puma/puma/blob/master/History.md\e[0m"

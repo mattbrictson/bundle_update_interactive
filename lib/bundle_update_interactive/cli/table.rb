@@ -5,6 +5,18 @@ require "pastel"
 class BundleUpdateInteractive::CLI
   class Table
     class << self
+      def withheld(gems)
+        columns = [
+          ["name", :formatted_gem_name],
+          ["requirement", :formatted_gemfile_requirement],
+          ["current", :formatted_current_version],
+          ["latest", :formatted_updated_version],
+          ["group", :formatted_gemfile_groups],
+          ["url", :formatted_changelog_uri]
+        ]
+        new(gems, columns)
+      end
+
       def updatable(gems)
         columns = [
           ["name", :formatted_gem_name],
