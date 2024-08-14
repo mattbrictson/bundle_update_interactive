@@ -13,17 +13,17 @@ module BundleUpdateInteractive
       options = Options.parse(argv)
 
       report = generate_report(options)
-      puts("No gems to update.").then { return } if report.updateable_gems.empty?
+      puts("No gems to update.").then { return } if report.updatable_gems.empty?
 
       puts
       puts legend
       puts
-      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updateable_gems)
+      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updatable_gems)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
       puts "\nUpdating the following gems."
       puts
-      puts Table.new(selected_gems).render
+      puts Table.updatable(selected_gems).render
       puts
       report.bundle_update!(*selected_gems.keys)
     rescue Exception => e # rubocop:disable Lint/RescueException
@@ -46,14 +46,13 @@ module BundleUpdateInteractive
 
     def generate_report(options)
       whisper "Resolving latest gem versions..."
-      report = Report.generate(groups: options.exclusively)
-      updateable_gems = report.updateable_gems
-      return report if updateable_gems.empty?
+      report = Reporter.new(groups: options.exclusively).generate_report
+      return report if report.empty?
 
       whisper "Checking for security vulnerabilities..."
       report.scan_for_vulnerabilities!
 
-      progress "Finding changelogs", updateable_gems.values, &:changelog_uri
+      progress "Finding changelogs", report.updatable_gems.values, &:changelog_uri
       report
     end
 

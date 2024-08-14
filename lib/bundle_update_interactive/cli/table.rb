@@ -4,12 +4,32 @@ require "pastel"
 
 class BundleUpdateInteractive::CLI
   class Table
-    HEADERS = ["name", "from", nil, "to", "group", "url"].freeze
+    class << self
+      def updatable(gems)
+        columns = [
+          ["name", :formatted_gem_name],
+          ["from", :formatted_current_version],
+          [nil, "→"],
+          ["to", :formatted_updated_version],
+          ["group", :formatted_gemfile_groups],
+          ["url", :formatted_changelog_uri]
+        ]
+        new(gems, columns)
+      end
+    end
 
-    def initialize(outdated_gems)
+    def initialize(gems, columns)
       @pastel = BundleUpdateInteractive.pastel
-      @headers = HEADERS.map { |h| pastel.dim.underline(h) }
-      @rows = outdated_gems.transform_values { |gem| Row.new(gem).to_a.map(&:to_s) }
+      @headers = columns.map { |header, _| pastel.dim.underline(header) }
+      @rows = gems.transform_values do |gem|
+        row = Row.new(gem)
+        columns.map do |_, col|
+          case col
+          when Symbol then row.public_send(col).to_s
+          when String then col
+          end
+        end
+      end
       @column_widths = calculate_column_widths
     end
 

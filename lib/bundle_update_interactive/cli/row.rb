@@ -16,17 +16,6 @@ class BundleUpdateInteractive::CLI
       @pastel = BundleUpdateInteractive.pastel
     end
 
-    def to_a
-      [
-        formatted_gem_name,
-        formatted_current_version,
-        "→",
-        formatted_updated_version,
-        formatted_gemfile_groups,
-        formatted_changelog_uri
-      ]
-    end
-
     def formatted_gem_name
       vulnerable? ? pastel.white.on_red(name) : apply_semver_highlight(name)
     end
