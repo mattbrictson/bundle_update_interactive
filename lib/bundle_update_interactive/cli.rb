@@ -11,18 +11,15 @@ module BundleUpdateInteractive
 
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
       options = Options.parse(argv)
-
       report = generate_report(options)
+
+      puts_legend_and_withheld_gems(report) unless report.empty?
       puts("No gems to update.").then { return } if report.updatable_gems.empty?
 
-      puts
-      puts legend
-      puts
       selected_gems = MultiSelect.prompt_for_gems_to_update(report.updatable_gems)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
-      puts "\nUpdating the following gems."
-      puts
+      puts "Updating the following gems."
       puts Table.updatable(selected_gems).render
       puts
       report.bundle_update!(*selected_gems.keys)
@@ -31,6 +28,17 @@ module BundleUpdateInteractive
     end
 
     private
+
+    def puts_legend_and_withheld_gems(report)
+      puts
+      puts legend
+      puts
+      return if report.withheld_gems.empty?
+
+      puts "The following gems are being held back and cannot be updated."
+      puts Table.withheld(report.withheld_gems).render
+      puts
+    end
 
     def legend
       pastel = BundleUpdateInteractive.pastel
@@ -52,7 +60,7 @@ module BundleUpdateInteractive
       whisper "Checking for security vulnerabilities..."
       report.scan_for_vulnerabilities!
 
-      progress "Finding changelogs", report.updatable_gems.values, &:changelog_uri
+      progress "Finding changelogs", report.all_gems.values, &:changelog_uri
       report
     end
 

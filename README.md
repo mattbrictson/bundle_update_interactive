@@ -63,6 +63,12 @@ Some gems, notably `rails`, are composed of smaller gems like `actionpack`, `act
 
 Therefore, if any Rails component has a security vulnerability, `bundle update-interactive` will automatically roll up that information into a single `rails` line item, so you can select it and upgrade all of its components in one shot.
 
+### Held back gems
+
+When a newer version of a gem is available, but updating is not allowed due to a Gemfile requirement, `update-interactive` will report that the gem has been held back.
+
+<img src="images/held-back.png" alt="Screenshot of rails and selenium-webdriver gems held back due to Gemfile requirements" width="717" />
+
 ### Changelogs
 
 `bundle update-interactive` will do its best to find an appropriate changelog for each gem.

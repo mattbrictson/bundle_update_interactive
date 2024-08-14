@@ -4,6 +4,7 @@ module BundleUpdateInteractive
   class OutdatedGem
     attr_accessor :name,
                   :gemfile_groups,
+                  :gemfile_requirement,
                   :git_source_uri,
                   :current_version,
                   :current_git_version,

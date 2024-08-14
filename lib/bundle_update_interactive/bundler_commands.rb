@@ -19,6 +19,14 @@ module BundleUpdateInteractive
         `#{command.join(" ")}`.tap { raise "bundle lock command failed" unless Process.last_status.success? }
       end
 
+      def parse_outdated(*gems)
+        command = ["#{bundle_bin.shellescape} outdated --parseable", *gems.flatten.map(&:shellescape)]
+        output = `#{command.join(" ")}`
+        raise "bundle outdated command failed" if output.empty? && !Process.last_status.success?
+
+        output.scan(/^(\S+) \(newest (\S+),/).to_h
+      end
+
       private
 
       def bundle_bin

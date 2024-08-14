@@ -61,5 +61,12 @@ class BundleUpdateInteractive::CLI
 
       assert_equal ":development, :test", row.formatted_gemfile_groups
     end
+
+    def test_formatted_gemfile_requirement_treats_trivial_requirement_as_nil
+      outdated_gem = build(:outdated_gem, gemfile_requirement: ">= 0")
+      row = Row.new(outdated_gem)
+
+      assert_equal "", row.formatted_gemfile_requirement
+    end
   end
 end

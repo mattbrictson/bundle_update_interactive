@@ -35,6 +35,10 @@ class BundleUpdateInteractive::CLI
       gemfile_groups&.map(&:inspect)&.join(", ")
     end
 
+    def formatted_gemfile_requirement
+      gemfile_requirement.to_s == ">= 0" ? "" : gemfile_requirement.to_s
+    end
+
     def formatted_changelog_uri
       pastel.blue(changelog_uri)
     end
