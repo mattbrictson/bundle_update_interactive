@@ -7,6 +7,8 @@ require "tty/screen"
 
 class BundleUpdateInteractive::CLI
   class MultiSelect
+    extend StringHelper
+
     class List < TTY::Prompt::MultiList
       def initialize(prompt, **options)
         @opener = options.delete(:opener)
@@ -47,7 +49,7 @@ class BundleUpdateInteractive::CLI
 
     def self.prompt_for_gems_to_update(outdated_gems, prompt: nil)
       table = Table.updatable(outdated_gems)
-      title = "#{outdated_gems.length} gems can be updated."
+      title = "#{pluralize(outdated_gems.length, 'gem')} can be updated."
       opener = lambda do |gem|
         url = outdated_gems[gem].changelog_uri
         Launchy.open(url) unless url.nil?
