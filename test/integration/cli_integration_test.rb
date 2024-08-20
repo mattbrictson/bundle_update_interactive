@@ -45,6 +45,7 @@ module BundleUpdateInteractive
 
     def run_bundle_update_interactive(fixture:, argv:, key_presses: "\n")
       command = [
+        { "GEM_HOME" => ENV.fetch("GEM_HOME", nil) },
         Gem.ruby,
         "-I",
         File.expand_path("../../lib", __dir__),
@@ -52,8 +53,8 @@ module BundleUpdateInteractive
         *argv
       ]
       within_fixture_copy(fixture) do
-        Bundler.with_original_env do
-          out, err, status = Open3.capture3({ "BUNDLE_GEMFILE" => "Gemfile" }, *command, stdin_data: key_presses)
+        Bundler.with_unbundled_env do
+          out, err, status = Open3.capture3(*command, stdin_data: key_presses)
           raise "Command failed: #{[out, err].join}" unless status.success?
 
           [out, File.read("Gemfile"), File.read("Gemfile.lock")]
