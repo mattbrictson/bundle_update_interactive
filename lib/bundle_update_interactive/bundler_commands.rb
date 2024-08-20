@@ -10,6 +10,13 @@ module BundleUpdateInteractive
         system "#{bundle_bin.shellescape} update --conservative #{gems.flatten.map(&:shellescape).join(' ')}"
       end
 
+      def lock
+        success = system "#{bundle_bin.shellescape} lock"
+        raise "bundle lock command failed" unless success
+
+        true
+      end
+
       def read_updated_lockfile(*gems)
         command = ["#{bundle_bin.shellescape} lock --print"]
         command << "--conservative" if gems.any?

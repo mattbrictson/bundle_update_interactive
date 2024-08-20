@@ -9,6 +9,19 @@ module BundleUpdateInteractive
       Gem.stubs(:bin_path).with("bundler", "bundle", Bundler::VERSION).returns("/exe/bundle")
     end
 
+    def test_lock_executes_bundle_lock
+      BundlerCommands.expects(:system).with("/exe/bundle lock").returns(true)
+
+      assert BundlerCommands.lock
+    end
+
+    def test_lock_raises_if_bundle_lock_fails
+      BundlerCommands.expects(:system).with("/exe/bundle lock").returns(false)
+
+      error = assert_raises(RuntimeError) { BundlerCommands.lock }
+      assert_match(/bundle lock command failed/i, error.message)
+    end
+
     def test_read_updated_lockfile_runs_bundle_lock_and_captures_output
       expect_backticks("/exe/bundle lock --print --update", captures: "bundler output")
       result = BundlerCommands.read_updated_lockfile
