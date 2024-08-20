@@ -15,7 +15,7 @@ module BundleUpdateInteractive
     end
 
     def test_prints_error_in_red_to_stderr_and_exits_with_failure_status
-      Reporter.expects(:new).raises(Error, "something went wrong")
+      Updater.expects(:new).raises(Error, "something went wrong")
 
       stdout, stderr, status = capture_io_and_exit_status do
         CLI.new.run(argv: [])
@@ -93,9 +93,9 @@ module BundleUpdateInteractive
         updatable_gems: updatable_gems
       )
 
-      reporter = Reporter.new
-      reporter.stubs(:generate_report).returns(report)
-      Reporter.stubs(:new).returns(reporter)
+      updater = Updater.new
+      updater.stubs(:generate_report).returns(report)
+      Updater.stubs(:new).returns(updater)
       report
     end
   end

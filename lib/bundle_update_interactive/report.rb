@@ -23,11 +23,6 @@ module BundleUpdateInteractive
       @all_gems ||= withheld_gems.merge(updatable_gems)
     end
 
-    def expand_gems_with_exact_dependencies(*gem_names)
-      gem_names.flatten!
-      gem_names.flat_map { |name| [name, *current_lockfile[name].exact_dependencies] }.uniq
-    end
-
     def scan_for_vulnerabilities!
       return false if all_gems.empty?
 
@@ -36,14 +31,10 @@ module BundleUpdateInteractive
       vulnerable_gem_names = Set.new(audit_report.vulnerable_gems.map(&:name))
 
       all_gems.each do |name, gem|
-        gem.vulnerable = (vulnerable_gem_names & [name, *current_lockfile[name].exact_dependencies]).any?
+        exact_deps = current_lockfile && current_lockfile[name].exact_dependencies
+        gem.vulnerable = (vulnerable_gem_names & [name, *Array(exact_deps)]).any?
       end
       true
-    end
-
-    def bundle_update!(*gem_names)
-      expanded_names = expand_gems_with_exact_dependencies(*gem_names)
-      BundlerCommands.update_gems_conservatively(*expanded_names)
     end
 
     private
