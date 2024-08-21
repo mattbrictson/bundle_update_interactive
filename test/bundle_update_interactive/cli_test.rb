@@ -62,6 +62,22 @@ module BundleUpdateInteractive
       assert_nil(status)
     end
 
+    def test_uses_correct_grammar_when_only_one_gem_can_be_updated
+      report = stub_report(
+        updatable_gems: {
+          "sqlite3" => build(:outdated_gem, name: "sqlite3", current_version: "1.7.3", updated_version: "2.0.3", changelog_uri: nil)
+        }
+      )
+
+      report.expects(:scan_for_vulnerabilities!)
+
+      stdout, _stderr, _status = capture_io_and_exit_status(stdin_data: "\n") do
+        CLI.new.run(argv: [])
+      end
+
+      assert_includes stdout, "1 gem can be updated"
+    end
+
     private
 
     def stub_report(withheld_gems: {}, updatable_gems: {})

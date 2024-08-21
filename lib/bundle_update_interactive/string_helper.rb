@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# lib/bundle_update_interactive/string_helper.rb
 module BundleUpdateInteractive
   module StringHelper
     def pluralize(count, singular, plural = nil)

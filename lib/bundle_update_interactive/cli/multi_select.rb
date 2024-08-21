@@ -7,7 +7,7 @@ require "tty/screen"
 
 class BundleUpdateInteractive::CLI
   class MultiSelect
-    extend StringHelper
+    extend BundleUpdateInteractive::StringHelper
 
     class List < TTY::Prompt::MultiList
       def initialize(prompt, **options)
