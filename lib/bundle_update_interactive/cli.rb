@@ -4,11 +4,6 @@ require "bundler"
 
 module BundleUpdateInteractive
   class CLI
-    autoload :MultiSelect, "bundle_update_interactive/cli/multi_select"
-    autoload :Options, "bundle_update_interactive/cli/options"
-    autoload :Row, "bundle_update_interactive/cli/row"
-    autoload :Table, "bundle_update_interactive/cli/table"
-
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
       options = Options.parse(argv)
       report = generate_report(options)
