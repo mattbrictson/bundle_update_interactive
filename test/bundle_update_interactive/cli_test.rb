@@ -65,7 +65,13 @@ module BundleUpdateInteractive
     def test_uses_correct_grammar_when_only_one_gem_can_be_updated
       report = stub_report(
         updatable_gems: {
-          "sqlite3" => build(:outdated_gem, name: "sqlite3", current_version: "1.7.3", updated_version: "2.0.3", changelog_uri: nil)
+          "sqlite3" => build(
+            :outdated_gem,
+            name: "sqlite3",
+            current_version: "1.7.3",
+            updated_version: "2.0.3",
+            changelog_uri: nil
+          )
         }
       )
 

@@ -3,7 +3,7 @@
 # lib/bundle_update_interactive/string_helper.rb
 module BundleUpdateInteractive
   module StringHelper
-    def pluralize(count, singular, plural = nil)
+    def pluralize(count, singular, plural=nil)
       plural ||= "#{singular}s"
       "#{count} #{count == 1 ? singular : plural}"
     end
