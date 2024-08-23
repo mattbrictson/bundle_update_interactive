@@ -6,18 +6,18 @@ module BundleUpdateInteractive
       def self.parse(version)
         return version if version.is_a?(GemRequirement)
 
-        version = version.strip
-        _, operator, number = version.match(/^([^\d\s]*)\s*(.+)/).to_a
+        _, operator, number = version.strip.match(/^([^\d\s]*)\s*(.+)/).to_a
         operator = nil if operator.empty?
 
-        new(parts: number.split("."), operator: operator)
+        new(parts: number.split("."), operator: operator, parsed_from: version)
       end
 
       attr_reader :parts, :operator
 
-      def initialize(parts:, operator: nil)
+      def initialize(parts:, operator: nil, parsed_from: nil)
         @parts = parts
         @operator = operator
+        @parsed_from = parsed_from
       end
 
       def exact?
@@ -45,7 +45,7 @@ module BundleUpdateInteractive
       end
 
       def to_s
-        [operator, parts.join(".")].compact.join(" ")
+        parsed_from || [operator, parts.join(".")].compact.join(" ")
       end
 
       def ==(other)
@@ -53,6 +53,10 @@ module BundleUpdateInteractive
 
         to_s == other.to_s
       end
+
+      private
+
+      attr_reader :parsed_from
     end
   end
 end

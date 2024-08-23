@@ -52,6 +52,10 @@ module BundleUpdateInteractive
         assert_equal("~> 5.2", parse("~> 5.2").shift("5.4.9").to_s)
       end
 
+      def test_shift_doesnt_affect_formatting_when_keeping_requirement_the_same
+        assert_equal("~>5.2.0 ", parse("~>5.2.0 ").shift("5.2.6").to_s)
+      end
+
       def test_shift_changes_exact_spec_to_new_version
         assert_equal("0.90.0", parse("0.89.0").shift("0.90.0").to_s)
       end
