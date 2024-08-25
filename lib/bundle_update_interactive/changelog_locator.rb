@@ -31,7 +31,8 @@ module BundleUpdateInteractive
         return "https://github.com/#{changelog_path}" if changelog_path
 
         releases_url = "https://github.com/#{path}/releases"
-        releases_url if HTTP.head("#{releases_url}/tag/v#{version}").success?
+        response = HTTP.get(releases_url)
+        releases_url if response.success? && response.body.include?("v#{version}")
       end
 
       private

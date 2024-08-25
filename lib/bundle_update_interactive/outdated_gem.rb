@@ -38,8 +38,8 @@ module BundleUpdateInteractive
       @changelog_uri =
         if (diff_url = build_git_diff_url)
           diff_url
-        elsif rubygems_source?
-          changelog_locator.find_changelog_uri(name: name, version: updated_version.to_s)
+        elsif (found_uri = rubygems_source? && locate_changelog_uri)
+          found_uri
         else
           begin
             Gem::Specification.find_by_name(name)&.homepage
@@ -56,6 +56,10 @@ module BundleUpdateInteractive
     private
 
     attr_reader :changelog_locator
+
+    def locate_changelog_uri
+      changelog_locator.find_changelog_uri(name: name, version: updated_version.to_s)
+    end
 
     def build_git_diff_url
       return nil unless git_version_changed?

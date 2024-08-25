@@ -60,5 +60,16 @@ module BundleUpdateInteractive
         assert_nil uri
       end
     end
+
+    def test_returns_nil_when_project_is_on_github_but_is_not_using_releases
+      VCR.use_cassette("changelog_requests") do
+        # This gem doesn't publish changelog_uri metadata, it *is* on GitHub, but there is no
+        # CHANGELOG, etc. file, and the GitHub Releases page doesn't seem to have any data,
+        # so we don't have a way to discover its changelog.
+        uri = ChangelogLocator.new.find_changelog_uri(name: "parallel", version: "1.26.3")
+
+        assert_nil uri
+      end
+    end
   end
 end
