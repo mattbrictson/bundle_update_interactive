@@ -12,6 +12,7 @@
 ---
 
 - [Quick start](#quick-start)
+- [Options](#options)
 - [Features](#features)
 - [Prior art](#prior-art)
 - [Support](#support)
