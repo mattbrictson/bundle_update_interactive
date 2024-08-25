@@ -48,6 +48,9 @@ module BundleUpdateInteractive
             Show updates for development and test gems only, leaving production gems untouched.
             #{pastel.green('bundle update-interactive')} #{pastel.yellow('-D')}
 
+            Allow the latest gem versions, ignoring Gemfile pins. May modify the Gemfile.
+            #{pastel.green('bundle update-interactive')} #{pastel.yellow('--latest')}
+
         HELP
       end
 
@@ -61,6 +64,9 @@ module BundleUpdateInteractive
         OptionParser.new do |parser|
           parser.summary_indent = "  "
           parser.summary_width = 24
+          parser.on("--latest", "Modify the Gemfile to allow the latest gem versions") do
+            options.latest = true
+          end
           parser.on(
             "--exclusively=GROUP",
             "Update gems exclusively belonging to the specified Gemfile GROUP(s)"
@@ -84,9 +90,15 @@ module BundleUpdateInteractive
     end
 
     attr_accessor :exclusively
+    attr_writer :latest
 
     def initialize
       @exclusively = []
+      @latest = false
+    end
+
+    def latest?
+      @latest
     end
   end
 end

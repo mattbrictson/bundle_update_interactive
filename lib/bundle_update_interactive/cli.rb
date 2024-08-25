@@ -6,7 +6,7 @@ module BundleUpdateInteractive
   class CLI
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
       options = Options.parse(argv)
-      report = generate_report(options)
+      report, updater = generate_report(options)
 
       puts_legend_and_withheld_gems(report) unless report.empty?
       puts("No gems to update.").then { return } if report.updatable_gems.empty?
@@ -17,12 +17,17 @@ module BundleUpdateInteractive
       puts "Updating the following gems."
       puts Table.updatable(selected_gems).render
       puts
-      report.bundle_update!(*selected_gems.keys)
+      updater.apply_updates(*selected_gems.keys)
+      puts_gemfile_modified_notice if updater.modified_gemfile?
     rescue Exception => e # rubocop:disable Lint/RescueException
       handle_exception(e)
     end
 
     private
+
+    def puts_gemfile_modified_notice
+      puts BundleUpdateInteractive.pastel.yellow("Your Gemfile was changed to accommodate the latest gem versions.")
+    end
 
     def puts_legend_and_withheld_gems(report)
       puts
@@ -49,14 +54,17 @@ module BundleUpdateInteractive
 
     def generate_report(options)
       whisper "Resolving latest gem versions..."
-      report = Reporter.new(groups: options.exclusively).generate_report
-      return report if report.empty?
+      updater_class = options.latest? ? Latest::Updater : Updater
+      updater = updater_class.new(groups: options.exclusively)
 
-      whisper "Checking for security vulnerabilities..."
-      report.scan_for_vulnerabilities!
+      report = updater.generate_report
+      unless report.empty?
+        whisper "Checking for security vulnerabilities..."
+        report.scan_for_vulnerabilities!
+        progress "Finding changelogs", report.all_gems.values, &:changelog_uri
+      end
 
-      progress "Finding changelogs", report.all_gems.values, &:changelog_uri
-      report
+      [report, updater]
     end
 
     def whisper(message)

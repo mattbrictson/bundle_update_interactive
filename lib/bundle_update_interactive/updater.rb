@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BundleUpdateInteractive
-  class Reporter
+  class Updater
     def initialize(groups: [])
       @gemfile = Gemfile.parse
       @current_lockfile = Lockfile.parse
@@ -13,6 +13,16 @@ module BundleUpdateInteractive
       withheld_gems = find_withheld_gems(exclude: updatable_gems.keys)
 
       Report.new(current_lockfile: current_lockfile, updatable_gems: updatable_gems, withheld_gems: withheld_gems)
+    end
+
+    def apply_updates(*gem_names)
+      expanded_names = expand_gems_with_exact_dependencies(*gem_names)
+      BundlerCommands.update_gems_conservatively(*expanded_names)
+    end
+
+    # Overridden by Latest::Updater subclass
+    def modified_gemfile?
+      false
     end
 
     private
@@ -33,6 +43,20 @@ module BundleUpdateInteractive
       end
     end
 
+    def find_withheld_gems(exclude: [])
+      possibly_withheld = gemfile.dependencies.filter_map do |dep|
+        dep.name if dep.should_include? && !dep.requirement.none? # rubocop:disable Style/InverseMethods
+      end
+      possibly_withheld -= exclude
+      possibly_withheld &= candidate_gems unless candidate_gems.nil?
+
+      return {} if possibly_withheld.empty?
+
+      BundlerCommands.parse_outdated(*possibly_withheld).to_h do |name, newest|
+        [name, build_outdated_gem(name, newest, nil)]
+      end
+    end
+
     def build_outdated_gem(name, updated_version, updated_git_version)
       current_lockfile_entry = current_lockfile[name]
 
@@ -49,18 +73,9 @@ module BundleUpdateInteractive
       )
     end
 
-    def find_withheld_gems(exclude: [])
-      possibly_withheld = gemfile.dependencies.filter_map do |dep|
-        dep.name if dep.should_include? && !dep.requirement.none? # rubocop:disable Style/InverseMethods
-      end
-      possibly_withheld -= exclude
-      possibly_withheld &= candidate_gems unless candidate_gems.nil?
-
-      return {} if possibly_withheld.empty?
-
-      BundlerCommands.parse_outdated(*possibly_withheld).to_h do |name, newest|
-        [name, build_outdated_gem(name, newest, nil)]
-      end
+    def expand_gems_with_exact_dependencies(*gem_names)
+      gem_names.flatten!
+      gem_names.flat_map { |name| [name, *current_lockfile[name].exact_dependencies] }.uniq
     end
   end
 end

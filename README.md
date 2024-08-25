@@ -12,6 +12,7 @@
 ---
 
 - [Quick start](#quick-start)
+- [Options](#options)
 - [Features](#features)
 - [Prior art](#prior-art)
 - [Support](#support)
@@ -38,6 +39,11 @@ Or the shorthand:
 ```
 bundle ui
 ```
+
+## Options
+
+- `--latest` [modifies the Gemfile if necessary to allow the latest gem versions](#allow-latest-versions)
+- `-D` / `--exclusively=GROUP` [limits updatable gems by Gemfile groups](#limit-impact-by-gemfile-groups)
 
 ## Features
 
@@ -68,6 +74,30 @@ Therefore, if any Rails component has a security vulnerability, `bundle update-i
 When a newer version of a gem is available, but updating is not allowed due to a Gemfile requirement, `update-interactive` will report that the gem has been held back.
 
 <img src="images/held-back.png" alt="Screenshot of rails and selenium-webdriver gems held back due to Gemfile requirements" width="717" />
+
+To allow updates for gems that would normally be held back, use the `--latest` option (explained in the next section).
+
+### Allow latest versions
+
+Normally `update-interactive` only makes changes to your Gemfile.lock. It honors the version restrictions ("pins") in your Gemfile and will not update your Gemfile.lock to have versions that are not allowed. However with the `--latest` flag, update-interactive can update the version pins in your Gemfile as well. Consider the following Gemfile:
+
+```ruby
+gem "rails", "~> 7.1.0"
+```
+
+Normally running `bundle update-interactive` will report that Rails is held back and therefore cannot be updated to the latest version. However, if you pass the `--latest` option like this:
+
+```
+bundle update-interactive --latest
+```
+
+Now Rails will be allowed to update. If you select to update Rails to the latest version (e.g. 7.2.0), `update-interactive` will modify the version requirement in your Gemfile to look like this:
+
+```ruby
+gem "rails", "~> 7.2.0"
+```
+
+In other words, it works similarly to `yarn upgrade-interactive --latest`.
 
 ### Changelogs
 
