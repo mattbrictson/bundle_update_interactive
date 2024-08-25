@@ -20,6 +20,26 @@ module BundleUpdateInteractive
       assert_equal "https://github.com/rails/rails/releases/tag/v7.1.3.4", outdated_gem.changelog_uri
     end
 
+    def test_changelog_uri_for_rubygems_source_falls_back_to_gem_spec_homepage_if_locator_fails
+      Gem::Specification
+        .expects(:find_by_name)
+        .with("gem_without_changelog")
+        .returns(Gem::Specification.new("gem_without_changelog") { |spec| spec.homepage = "https://example/" })
+
+      changelog_locator = mock
+      ChangelogLocator.expects(:new).returns(changelog_locator)
+      changelog_locator.expects(:find_changelog_uri).with(name: "gem_without_changelog", version: "1.0.0").returns(nil)
+
+      outdated_gem = build(
+        :outdated_gem,
+        rubygems_source: true,
+        name: "gem_without_changelog",
+        updated_version: "1.0.0"
+      )
+
+      assert_equal "https://example/", outdated_gem.changelog_uri
+    end
+
     def test_changelog_uri_diff_url_for_github_repo
       outdated_gem = build(
         :outdated_gem,
