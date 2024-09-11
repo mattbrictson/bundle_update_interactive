@@ -15,9 +15,8 @@ module BundleUpdateInteractive
       Report.new(current_lockfile: current_lockfile, updatable_gems: updatable_gems, withheld_gems: withheld_gems)
     end
 
-    # TODO: return hash of gem_name => OutdatedGem of each successful update so we can include it in git commit message
-    def apply_updates(*gem_names)
-      expanded_names = expand_gems_with_exact_dependencies(*gem_names)
+    def apply_updates(selected_gems)
+      expanded_names = expand_gems_with_exact_dependencies(*selected_gems.keys)
       BundlerCommands.update_gems_conservatively(*expanded_names)
     end
 
