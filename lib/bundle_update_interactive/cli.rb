@@ -57,6 +57,9 @@ module BundleUpdateInteractive
       updater_class = options.latest? ? Latest::Updater : Updater
       updater = updater_class.new(groups: options.exclusively)
 
+      # TODO: add CLI option to control whether this behavior is used
+      updater = GitCommittingUpdater.new(updater) # if options.commit?
+
       report = updater.generate_report
       unless report.empty?
         whisper "Checking for security vulnerabilities..."
