@@ -18,6 +18,11 @@ module BundleUpdateInteractive
     def apply_updates(*gem_names)
       expanded_names = expand_gems_with_exact_dependencies(*gem_names)
       BundlerCommands.update_gems_conservatively(*expanded_names)
+
+      # Return the gems that were actually updated based on observed changes to the lock file
+      updated_gems = build_outdated_gems(File.read("Gemfile.lock"))
+      @current_lockfile = Lockfile.parse
+      updated_gems
     end
 
     # Overridden by Latest::Updater subclass
@@ -32,7 +37,11 @@ module BundleUpdateInteractive
     def find_updatable_gems
       return {} if candidate_gems && candidate_gems.empty?
 
-      updated_lockfile = Lockfile.parse(BundlerCommands.read_updated_lockfile(*Array(candidate_gems)))
+      build_outdated_gems(BundlerCommands.read_updated_lockfile(*Array(candidate_gems)))
+    end
+
+    def build_outdated_gems(lockfile_contents)
+      updated_lockfile = Lockfile.parse(lockfile_contents)
       current_lockfile.entries.each_with_object({}) do |current_lockfile_entry, hash|
         name = current_lockfile_entry.name
         updated_lockfile_entry = updated_lockfile && updated_lockfile[name]

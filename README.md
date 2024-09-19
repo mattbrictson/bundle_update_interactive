@@ -42,6 +42,7 @@ bundle ui
 
 ## Options
 
+- `--commit` [applies each gem update in a discrete git commit](#git-commits)
 - `--latest` [modifies the Gemfile if necessary to allow the latest gem versions](#allow-latest-versions)
 - `-D` / `--exclusively=GROUP` [limits updatable gems by Gemfile groups](#limit-impact-by-gemfile-groups)
 
@@ -68,6 +69,27 @@ Gems sourced from Git repositories are highlighted in cyan, regardless of the se
 Some gems, notably `rails`, are composed of smaller gems like `actionpack`, `activesupport`, `railties`, etc. Because of how these component gem versions are constrained, you cannot update just one of them; they all must be updated together.
 
 Therefore, if any Rails component has a security vulnerability, `bundle update-interactive` will automatically roll up that information into a single `rails` line item, so you can select it and upgrade all of its components in one shot.
+
+### Git commits
+
+Sometimes, updating gems can lead to bugs or regressions. To facilitate troubleshooting, `update-interactive` offers the ability to commit each selected gem update in its own git commit, complete with a descriptive commit message. You can then make use of tools like `git bisect` to more easily find the update that introduced the problem.
+
+To enable this behavior, pass the `--commit` option:
+
+```
+bundle update-interactive --commit
+```
+
+The gems you select to be updated will be applied in separate commits, like this:
+
+```
+* c9801382 Update activeadmin 3.2.2 → 3.2.3
+* 9957254b Update rexml 3.3.5 → 3.3.6
+* 4a4f2072 Update sass 1.77.6 → 1.77.8
+```
+
+> [!NOTE]
+> In rare cases, Bundler may not be able to update a gem separately, due to interdependencies between gem versions. If this happens, you will see a message like "attempted to update [GEM] but its version stayed the same."
 
 ### Held back gems
 

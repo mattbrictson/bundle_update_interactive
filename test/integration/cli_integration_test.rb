@@ -8,11 +8,9 @@ require "tmpdir"
 module BundleUpdateInteractive
   class CLIIntegrationIest < Minitest::Test
     def test_updates_lock_file_based_on_selected_gem_while_honoring_gemfile_requirement
-      out, _gemfile, lockfile = run_bundle_update_interactive(
-        fixture: "integration",
-        argv: [],
-        key_presses: "j \n"
-      )
+      out, _gemfile, lockfile = within_fixture_copy("integration") do
+        run_bundle_update_interactive(argv: [], key_presses: "j \n")
+      end
 
       assert_includes out, "Color legend:"
 
@@ -45,11 +43,9 @@ module BundleUpdateInteractive
     def test_updates_lock_file_and_gemfile_to_accommodate_latest_version_when_latest_option_is_specified
       latest_minitest_version = fetch_latest_gem_version_from_rubygems_api("minitest")
 
-      out, gemfile, lockfile = run_bundle_update_interactive(
-        fixture: "integration",
-        argv: ["--latest"],
-        key_presses: "j \n"
-      )
+      out, gemfile, lockfile = within_fixture_copy("integration") do
+        run_bundle_update_interactive(argv: ["--latest"], key_presses: "j \n")
+      end
 
       assert_includes out, "Color legend:"
 
@@ -84,9 +80,21 @@ module BundleUpdateInteractive
       LOCK
     end
 
+    def test_updates_each_selected_gem_with_a_git_commit
+      out, _gemfile, _lockfile = within_fixture_copy("integration") do
+        system "git init", out: File::NULL, exception: true
+        system "git add .", out: File::NULL, exception: true
+        system "git commit -m init", out: File::NULL, exception: true
+        run_bundle_update_interactive(argv: ["--commit"], key_presses: " j \n")
+      end
+
+      assert_match(/^\[(main|master) \h+\] Update bigdecimal 3\.1\.7 →/, out)
+      assert_match(/^\[(main|master) \h+\] Update minitest 5\.0\.0 →/, out)
+    end
+
     private
 
-    def run_bundle_update_interactive(fixture:, argv:, key_presses: "\n")
+    def run_bundle_update_interactive(argv:, key_presses: "\n")
       command = [
         { "GEM_HOME" => ENV.fetch("GEM_HOME", nil) },
         Gem.ruby,
@@ -95,13 +103,11 @@ module BundleUpdateInteractive
         File.expand_path("../../exe/bundler-update-interactive", __dir__),
         *argv
       ]
-      within_fixture_copy(fixture) do
-        Bundler.with_unbundled_env do
-          out, err, status = Open3.capture3(*command, stdin_data: key_presses)
-          raise "Command failed: #{[out, err].join}" unless status.success?
+      Bundler.with_unbundled_env do
+        out, err, status = Open3.capture3(*command, stdin_data: key_presses)
+        raise "Command failed: #{[out, err].join}" unless status.success?
 
-          [out, File.read("Gemfile"), File.read("Gemfile.lock")]
-        end
+        [out, File.read("Gemfile"), File.read("Gemfile.lock")]
       end
     end
 
