@@ -61,9 +61,12 @@ module BundleUpdateInteractive
       end
 
       def build_parser(options) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-        OptionParser.new do |parser|
+        OptionParser.new do |parser| # rubocop:disable Metrics/BlockLength
           parser.summary_indent = "  "
           parser.summary_width = 24
+          parser.on("--commit", "Create a git commit for each selected gem update") do
+            options.commit = true
+          end
           parser.on("--latest", "Modify the Gemfile to allow the latest gem versions") do
             options.latest = true
           end
@@ -90,11 +93,16 @@ module BundleUpdateInteractive
     end
 
     attr_accessor :exclusively
-    attr_writer :latest
+    attr_writer :commit, :latest
 
     def initialize
       @exclusively = []
+      @commit = false
       @latest = false
+    end
+
+    def commit?
+      @commit
     end
 
     def latest?

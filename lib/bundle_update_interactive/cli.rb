@@ -17,7 +17,13 @@ module BundleUpdateInteractive
       puts "Updating the following gems."
       puts Table.updatable(selected_gems).render
       puts
-      updater.apply_updates(*selected_gems.keys)
+
+      if options.commit?
+        GitCommitter.new(updater).apply_updates_as_individual_commits(*selected_gems.keys)
+      else
+        updater.apply_updates(*selected_gems.keys)
+      end
+
       puts_gemfile_modified_notice if updater.modified_gemfile?
     rescue Exception => e # rubocop:disable Lint/RescueException
       handle_exception(e)

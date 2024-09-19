@@ -45,6 +45,7 @@ module BundleUpdateInteractive
 
       assert_empty options.exclusively
       refute_predicate options, :latest?
+      refute_predicate options, :commit?
     end
 
     def test_allows_exclusive_groups_to_be_specified_as_comma_separated
@@ -55,6 +56,12 @@ module BundleUpdateInteractive
     def test_dash_capital_d_is_a_shortcut_for_exclusively_development_test
       options = CLI::Options.parse(%w[-D])
       assert_equal %i[development test], options.exclusively
+    end
+
+    def test_commit_can_be_enabled
+      options = CLI::Options.parse(["--commit"])
+
+      assert_predicate options, :commit?
     end
 
     def test_latest_can_be_enabled
