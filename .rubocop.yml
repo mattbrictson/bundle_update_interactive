@@ -92,9 +92,6 @@ Rake/Desc:
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 
-Style/ClassAndModuleChildren:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
