@@ -22,5 +22,9 @@ module BundleUpdateInteractive
     def dependencies
       @dependencies.values
     end
+
+    def gem_names
+      dependencies.map(&:name)
+    end
   end
 end
