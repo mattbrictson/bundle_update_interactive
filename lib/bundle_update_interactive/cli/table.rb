@@ -47,7 +47,7 @@ module BundleUpdateInteractive
       end
 
       def gem_names
-        rows.keys
+        rows.keys.sort
       end
 
       def render_header
@@ -61,7 +61,7 @@ module BundleUpdateInteractive
 
       def render
         lines = [render_header]
-        rows.keys.sort.each { |name| lines << render_gem(name) }
+        gem_names.each { |name| lines << render_gem(name) }
         lines.join("\n")
       end
 

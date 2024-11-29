@@ -20,6 +20,17 @@ module BundleUpdateInteractive
         }
       end
 
+      def test_renders_choices_in_alphabetical_order
+        @outdated_gems = @outdated_gems.to_a.reverse.to_h
+
+        stdout, _stderr, _status = capture_io_and_exit_status(stdin_data: "\n") do
+          MultiSelect.prompt_for_gems_to_update(@outdated_gems)
+        end
+        stdout = BundleUpdateInteractive.pastel.strip(stdout)
+
+        assert_equal ["⬡ a", "⬡ b", "⬡ c"], stdout.scan(/⬡ [a-z]/)
+      end
+
       def test_pressing_a_selects_all_rows
         selected = use_menu_with_keypress "a"
 
