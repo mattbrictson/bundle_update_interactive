@@ -44,6 +44,7 @@ bundle ui
 
 - `--commit` [applies each gem update in a discrete git commit](#git-commits)
 - `--latest` [modifies the Gemfile if necessary to allow the latest gem versions](#allow-latest-versions)
+- `--only-explicit` [updates Gemfile gems only (excluding indirect dependencies)](#exclude-indirect-dependencies)
 - `-D` / `--exclusively=GROUP` [limits updatable gems by Gemfile groups](#limit-impact-by-gemfile-groups)
 
 ## Features
@@ -144,6 +145,16 @@ Then `bundle update-interactive` will show a diff link instead of a changelog, s
 https://github.com/rails/rails/compare/5a8d894...77dfa65
 
 This feature currently works for GitHub, GitLab, and Bitbucket repos.
+
+### Exclude indirect dependencies
+
+Just like with `bundle outdated`, you can pass `--only-explicit` to limit updates to only gems that are explicitly listed in the Gemfile.
+
+```sh
+bundle update-interactive --only-explicit
+```
+
+This will omit indirect dependencies from the list of gems that can be updated.
 
 ### Limit impact by Gemfile groups
 
