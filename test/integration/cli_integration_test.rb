@@ -40,6 +40,15 @@ module BundleUpdateInteractive
       LOCK
     end
 
+    def test_omits_indirect_gems_when_only_explicit_option_is_passed
+      out, _gemfile, _lockfile = within_fixture_copy("integration/with_indirect") do
+        run_bundle_update_interactive(argv: ["--only-explicit"], key_presses: "\n")
+      end
+
+      assert_includes out, "1 gem can be updated."
+      assert_includes out, "‣ ⬡ mail"
+    end
+
     def test_updates_lock_file_and_gemfile_to_accommodate_latest_version_when_latest_option_is_specified
       latest_minitest_version = fetch_latest_gem_version_from_rubygems_api("minitest")
 

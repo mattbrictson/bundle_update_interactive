@@ -47,6 +47,7 @@ module BundleUpdateInteractive
         assert_empty options.exclusively
         refute_predicate options, :latest?
         refute_predicate options, :commit?
+        refute_predicate options, :only_explicit?
       end
 
       def test_allows_exclusive_groups_to_be_specified_as_comma_separated
@@ -69,6 +70,12 @@ module BundleUpdateInteractive
         options = Options.parse(["--latest"])
 
         assert_predicate options, :latest?
+      end
+
+      def test_only_explicit_can_be_enabled
+        options = Options.parse(["--only_explicit"])
+
+        assert_predicate options, :only_explicit?
       end
 
       def test_raises_exception_when_given_a_positional_argment

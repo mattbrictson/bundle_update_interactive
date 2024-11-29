@@ -71,6 +71,9 @@ module BundleUpdateInteractive
             parser.on("--latest", "Modify the Gemfile to allow the latest gem versions") do
               options.latest = true
             end
+            parser.on("--only-explicit", "Update Gemfile gems only (no indirect dependencies)") do
+              options.only_explicit = true
+            end
             parser.on(
               "--exclusively=GROUP",
               "Update gems exclusively belonging to the specified Gemfile GROUP(s)"
@@ -94,12 +97,13 @@ module BundleUpdateInteractive
       end
 
       attr_accessor :exclusively
-      attr_writer :commit, :latest
+      attr_writer :commit, :latest, :only_explicit
 
       def initialize
         @exclusively = []
         @commit = false
         @latest = false
+        @only_explicit = false
       end
 
       def commit?
@@ -108,6 +112,10 @@ module BundleUpdateInteractive
 
       def latest?
         @latest
+      end
+
+      def only_explicit?
+        @only_explicit
       end
     end
   end

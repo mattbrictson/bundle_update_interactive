@@ -2,7 +2,8 @@
 
 module BundleUpdateInteractive
   class Updater
-    def initialize(groups: [])
+    def initialize(groups: [], only_explicit: false)
+      @only_explicit = only_explicit
       @gemfile = Gemfile.parse
       @current_lockfile = Lockfile.parse
       @candidate_gems = current_lockfile.gems_exclusively_installed_by(gemfile: gemfile, groups: groups) if groups.any?
@@ -32,12 +33,14 @@ module BundleUpdateInteractive
 
     private
 
-    attr_reader :gemfile, :current_lockfile, :candidate_gems
+    attr_reader :gemfile, :current_lockfile, :candidate_gems, :only_explicit
 
     def find_updatable_gems
       return {} if candidate_gems && candidate_gems.empty?
 
-      build_outdated_gems(BundlerCommands.read_updated_lockfile(*Array(candidate_gems)))
+      updatable = build_outdated_gems(BundlerCommands.read_updated_lockfile(*Array(candidate_gems)))
+      updatable = updatable.slice(*gemfile.gem_names) if only_explicit
+      updatable
     end
 
     def build_outdated_gems(lockfile_contents)

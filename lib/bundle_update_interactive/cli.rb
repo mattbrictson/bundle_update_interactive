@@ -61,7 +61,7 @@ module BundleUpdateInteractive
     def generate_report(options)
       whisper "Resolving latest gem versions..."
       updater_class = options.latest? ? Latest::Updater : Updater
-      updater = updater_class.new(groups: options.exclusively)
+      updater = updater_class.new(groups: options.exclusively, only_explicit: options.only_explicit?)
 
       report = updater.generate_report
       unless report.empty?
