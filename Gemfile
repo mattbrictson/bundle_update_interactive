@@ -15,7 +15,7 @@ gem "webmock", "~> 3.23"
 
 if RUBY_VERSION >= "3.3"
   gem "mighty_test", "~> 0.3"
-  gem "rubocop", "1.68.0"
+  gem "rubocop", "1.69.0"
   gem "rubocop-factory_bot", "2.26.1"
   gem "rubocop-minitest", "0.36.0"
   gem "rubocop-packaging", "0.5.2"
