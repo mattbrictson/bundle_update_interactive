@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 require "bundler"
-require "concurrent/promises"
 
 module BundleUpdateInteractive
   class CLI
-    include Concurrent::Promises::FactoryMethods
-
     def run(argv: ARGV) # rubocop:disable Metrics/AbcSize
       options = Options.parse(argv)
       report, updater = generate_report(options)
@@ -73,10 +70,11 @@ module BundleUpdateInteractive
     end
 
     def populate_vulnerabilities_and_changelogs_concurrently(report)
+      pool = ThreadPool.new(max_threads: 25)
       whisper "Checking for security vulnerabilities..."
-      scan_promise = future(report, &:scan_for_vulnerabilities!)
+      scan_promise = pool.future(report, &:scan_for_vulnerabilities!)
       changelog_promises = report.all_gems.map do |_, outdated_gem|
-        future(outdated_gem, &:changelog_uri)
+        pool.future(outdated_gem, &:changelog_uri)
       end
       progress "Finding changelogs", changelog_promises, &:value!
       scan_promise.value!
