@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 gemspec
 
-gem "activesupport", "~> 7.1.3" # Needed for factory_bot 6.3
+gem "activesupport", "~> 8.0.1" # Needed for factory_bot 6.3
 gem "factory_bot", "~> 6.3.0"
 gem "minitest", "~> 5.11"
 gem "minitest-snapshots", "~> 1.1"
