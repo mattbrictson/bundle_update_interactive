@@ -1,6 +1,7 @@
+plugins:
+  - rubocop-minitest
 require:
   - rubocop-factory_bot
-  - rubocop-minitest
   - rubocop-packaging
   - rubocop-performance
   - rubocop-rake
