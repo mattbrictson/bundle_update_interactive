@@ -3,7 +3,6 @@
 [![Gem Version](https://img.shields.io/gem/v/bundle_update_interactive)](https://rubygems.org/gems/bundle_update_interactive)
 [![Gem Downloads](https://img.shields.io/gem/dt/bundle_update_interactive)](https://www.ruby-toolbox.com/projects/bundle_update_interactive)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mattbrictson/bundle_update_interactive/ci.yml)](https://github.com/mattbrictson/bundle_update_interactive/actions/workflows/ci.yml)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mattbrictson/bundle_update_interactive)](https://codeclimate.com/github/mattbrictson/bundle_update_interactive)
 
 **This gem adds an `update-interactive` command to [Bundler](https://bundler.io).** Run it to see what gems can be updated, then pick and choose which ones to update. If you've used `yarn upgrade-interactive`, the interface should be very familiar.
 
