@@ -10,6 +10,7 @@
 
 ---
 
+- [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Options](#options)
 - [Features](#features)
@@ -18,6 +19,10 @@
 - [License](#license)
 - [Code of conduct](#code-of-conduct)
 - [Contribution guide](#contribution-guide)
+
+## Requirements
+
+Bundler 2.x is required. Bundler 4 is not yet supported.
 
 ## Quick start
 
