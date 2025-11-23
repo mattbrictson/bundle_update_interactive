@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Runtime dependencies
-  spec.add_dependency "bundler", "~> 2.0"
+  spec.add_dependency "bundler", ">= 2", "< 5"
   spec.add_dependency "bundler-audit", ">= 0.9.1"
   spec.add_dependency "concurrent-ruby", ">= 1.3.4"
   spec.add_dependency "launchy", ">= 2.5.0"
