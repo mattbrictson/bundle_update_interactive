@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "bundler"
+require "bundler/audit"
+require "bundler/audit/scanner"
 require "set"
 
 module BundleUpdateInteractive
@@ -21,9 +23,8 @@ module BundleUpdateInteractive
       @all_gems ||= withheld_gems.merge(updatable_gems)
     end
 
-    def scan_for_vulnerabilities! # rubocop:disable Metrics/AbcSize
+    def scan_for_vulnerabilities!
       return false if all_gems.empty?
-      return false unless try_load_bundler_audit
 
       Bundler::Audit::Database.update!(quiet: true)
       audit_report = Bundler::Audit::Scanner.new.report
@@ -39,15 +40,5 @@ module BundleUpdateInteractive
     private
 
     attr_reader :current_lockfile
-
-    # TODO: Remove this workaround once Bundler 4 compatible version of bundler-audit is released
-    def try_load_bundler_audit
-      require "bundler/audit"
-      require "bundler/audit/scanner"
-      true
-    rescue LoadError
-      puts "Failed to load bundler-audit. Skipping vulnerabilities scan."
-      false
-    end
   end
 end

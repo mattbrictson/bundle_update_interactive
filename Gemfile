@@ -25,6 +25,3 @@ if RUBY_VERSION >= "3.3"
   gem "rubocop-performance", "1.26.1"
   gem "rubocop-rake", "0.7.1"
 end
-
-# TODO: Remove once Bundler 4 compatible version of bundler-audit is released
-gem "bundler-audit", github: "rubysec/bundler-audit" if RUBY_VERSION >= "4"
