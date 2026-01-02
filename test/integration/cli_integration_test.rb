@@ -50,10 +50,15 @@ module BundleUpdateInteractive
     end
 
     def test_updates_lock_file_and_gemfile_to_accommodate_latest_version_when_latest_option_is_specified
-      latest_minitest_version = fetch_latest_gem_version_from_rubygems_api("minitest")
-
-      # Minitest stopped supporting Ruby < 3.1 as of version 5.26.2
-      latest_minitest_version = "5.26.1" if RUBY_VERSION < "3.1"
+      # Minitest stopped supporting Ruby < 3.1 and < 3.2 as of versions 5.26.2 and 5.27.0, respectively
+      latest_minitest_version =
+        if RUBY_VERSION < "3.1"
+          "5.26.1"
+        elsif RUBY_VERSION < "3.2"
+          "5.27.0"
+        else
+          fetch_latest_gem_version_from_rubygems_api("minitest")
+        end
 
       out, gemfile, lockfile = within_fixture_copy("integration") do
         run_bundle_update_interactive(argv: ["--latest"], key_presses: "j \n")
