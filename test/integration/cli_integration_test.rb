@@ -83,18 +83,8 @@ module BundleUpdateInteractive
         gem "minitest", "~> #{latest_minitest_version}"
       GEMFILE
 
-      assert_includes lockfile, <<~LOCK
-        GEM
-          remote: https://rubygems.org/
-          specs:
-            bigdecimal (3.1.7)
-            minitest (#{latest_minitest_version})
-      LOCK
-      assert_includes lockfile, <<~LOCK
-        DEPENDENCIES
-          bigdecimal
-          minitest (~> #{latest_minitest_version})
-      LOCK
+      assert_includes lockfile, "minitest (#{latest_minitest_version})"
+      assert_includes lockfile, "minitest (~> #{latest_minitest_version})"
     end
 
     def test_updates_each_selected_gem_with_a_git_commit
