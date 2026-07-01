@@ -5,7 +5,7 @@ gemspec
 
 gem "activesupport", "~> 7.1.3" # Needed for factory_bot 6.3
 gem "cgi" # Needed for vcr on Ruby 3.5+
-gem "factory_bot", "~> 6.3.0"
+gem "factory_bot", "~> 6.6.0"
 gem "irb"
 gem "minitest", "~> 5.11"
 gem "minitest-snapshots", "~> 1.1"
