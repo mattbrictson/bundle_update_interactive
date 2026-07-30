@@ -87,6 +87,13 @@ module BundleUpdateInteractive
               options.with_major_update = true
             end
             parser.on(
+              "--commit-bundle-audit-message",
+              "Append bundler-audit advisory details to each commit body (implies --commit)"
+            ) do
+              options.commit = true
+              options.commit_bundle_audit_message = true
+            end
+            parser.on(
               "--exclusively=GROUP",
               "Update gems exclusively belonging to the specified Gemfile GROUP(s)"
             ) do |value|
@@ -109,7 +116,8 @@ module BundleUpdateInteractive
       end
 
       attr_accessor :exclusively
-      attr_writer :commit, :latest, :only_explicit, :only_security_updates, :with_major_update
+      attr_writer :commit, :latest, :only_explicit, :only_security_updates, :with_major_update,
+                  :commit_bundle_audit_message
 
       def initialize
         @exclusively = []
@@ -118,10 +126,15 @@ module BundleUpdateInteractive
         @only_explicit = false
         @only_security_updates = false
         @with_major_update = false
+        @commit_bundle_audit_message = false
       end
 
       def commit?
         @commit
+      end
+
+      def commit_bundle_audit_message?
+        @commit_bundle_audit_message
       end
 
       def latest?

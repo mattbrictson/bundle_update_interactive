@@ -3,7 +3,6 @@
 require "bundler"
 require "bundler/audit"
 require "bundler/audit/scanner"
-require "set"
 
 module BundleUpdateInteractive
   class Report
@@ -36,11 +35,12 @@ module BundleUpdateInteractive
 
       Bundler::Audit::Database.update!(quiet: true)
       audit_report = Bundler::Audit::Scanner.new.report
-      vulnerable_gem_names = Set.new(audit_report.vulnerable_gems.map(&:name))
+      advisories_by_gem = collect_advisories(audit_report)
 
       all_gems.each do |name, gem|
         exact_deps = current_lockfile && current_lockfile[name].exact_dependencies
-        gem.vulnerable = (vulnerable_gem_names & [name, *Array(exact_deps)]).any?
+        gem.advisories = [name, *Array(exact_deps)].flat_map { |n| advisories_by_gem[n] }
+        gem.vulnerable = gem.advisories.any?
       end
       true
     end
@@ -48,5 +48,15 @@ module BundleUpdateInteractive
     private
 
     attr_reader :current_lockfile
+
+    def collect_advisories(audit_report)
+      audit_report.unpatched_gems.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |result, advisories|
+        advisory = result.advisory
+        url = advisory.url
+        url = "https://github.com/advisories/GHSA-#{advisory.ghsa}" if !url.to_s.include?("github.com") && advisory.ghsa
+
+        advisories[result.gem.name] << { title: advisory.title, url: url, criticality: advisory.criticality }
+      end
+    end
   end
 end

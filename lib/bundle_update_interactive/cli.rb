@@ -20,7 +20,8 @@ module BundleUpdateInteractive
       puts
 
       if options.commit?
-        GitCommitter.new(updater).apply_updates_as_individual_commits(*selected_gems.keys)
+        committer = GitCommitter.new(updater, advisories: advisories_for_commit(selected_gems, options))
+        committer.apply_updates_as_individual_commits(*selected_gems.keys)
       else
         updater.apply_updates(*selected_gems.keys)
       end
@@ -42,6 +43,12 @@ module BundleUpdateInteractive
       return "No gems to update." unless options.only_security_updates?
 
       "No security updates to apply."
+    end
+
+    def advisories_for_commit(selected_gems, options)
+      return {} unless options.commit_bundle_audit_message?
+
+      selected_gems.transform_values(&:advisories)
     end
 
     def puts_gemfile_modified_notice
