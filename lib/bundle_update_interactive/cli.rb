@@ -12,7 +12,7 @@ module BundleUpdateInteractive
       updatable_gems = select_updatable_gems(report, options)
       puts(no_gems_message(options)).then { return } if updatable_gems.empty?
 
-      selected_gems = MultiSelect.prompt_for_gems_to_update(updatable_gems)
+      selected_gems = select_gems_to_update(updatable_gems, options)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
       puts "baem the Updating the following gems."
@@ -37,6 +37,12 @@ module BundleUpdateInteractive
       return report.updatable_gems unless options.only_security_updates?
 
       report.security_updates(include_major_updates: options.with_major_update?)
+    end
+
+    def select_gems_to_update(updatable_gems, options)
+      return updatable_gems if options.auto_update?
+
+      MultiSelect.prompt_for_gems_to_update(updatable_gems)
     end
 
     def no_gems_message(options)

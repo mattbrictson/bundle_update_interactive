@@ -80,6 +80,9 @@ module BundleUpdateInteractive
             parser.on("--only-explicit", "Update Gemfile gems only (no indirect dependencies)") do
               options.only_explicit = true
             end
+            parser.on("--auto-update", "Update every gem in the list without prompting for selection") do
+              options.auto_update = true
+            end
             parser.on("--only-security-updates", "Update only gems with known security vulnerabilities") do
               options.only_security_updates = true
             end
@@ -117,7 +120,7 @@ module BundleUpdateInteractive
 
       attr_accessor :exclusively
       attr_writer :commit, :latest, :only_explicit, :only_security_updates, :with_major_update,
-                  :commit_bundle_audit_message
+                  :commit_bundle_audit_message, :auto_update
 
       def initialize
         @exclusively = []
@@ -127,10 +130,15 @@ module BundleUpdateInteractive
         @only_security_updates = false
         @with_major_update = false
         @commit_bundle_audit_message = false
+        @auto_update = false
       end
 
       def commit?
         @commit
+      end
+
+      def auto_update?
+        @auto_update
       end
 
       def commit_bundle_audit_message?
