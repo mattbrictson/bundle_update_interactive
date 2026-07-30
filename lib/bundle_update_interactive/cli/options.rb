@@ -52,6 +52,12 @@ module BundleUpdateInteractive
               Allow the latest gem versions, ignoring Gemfile pins. May modify the Gemfile.
               #{pastel.green('bundle update-interactive')} #{pastel.yellow('--latest')}
 
+              Update only gems with known security vulnerabilities, excluding major updates.
+              #{pastel.green('bundle update-interactive')} #{pastel.yellow('--only-security-updates')}
+
+              Update gems with known security vulnerabilities, allowing major updates.
+              #{pastel.green('bundle update-interactive')} #{pastel.yellow('--only-security-updates --with-major-update')}
+
           HELP
         end
 
@@ -73,6 +79,12 @@ module BundleUpdateInteractive
             end
             parser.on("--only-explicit", "Update Gemfile gems only (no indirect dependencies)") do
               options.only_explicit = true
+            end
+            parser.on("--only-security-updates", "Update only gems with known security vulnerabilities") do
+              options.only_security_updates = true
+            end
+            parser.on("--with-major-update", "Include major version bumps among --only-security-updates") do
+              options.with_major_update = true
             end
             parser.on(
               "--exclusively=GROUP",
@@ -97,13 +109,15 @@ module BundleUpdateInteractive
       end
 
       attr_accessor :exclusively
-      attr_writer :commit, :latest, :only_explicit
+      attr_writer :commit, :latest, :only_explicit, :only_security_updates, :with_major_update
 
       def initialize
         @exclusively = []
         @commit = false
         @latest = false
         @only_explicit = false
+        @only_security_updates = false
+        @with_major_update = false
       end
 
       def commit?
@@ -116,6 +130,14 @@ module BundleUpdateInteractive
 
       def only_explicit?
         @only_explicit
+      end
+
+      def only_security_updates?
+        @only_security_updates
+      end
+
+      def with_major_update?
+        @with_major_update
       end
     end
   end

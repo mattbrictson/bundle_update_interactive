@@ -23,6 +23,14 @@ module BundleUpdateInteractive
       @all_gems ||= withheld_gems.merge(updatable_gems)
     end
 
+    # Gems with a known security vulnerability that can be updated. Major version bumps are
+    # excluded unless include_major_updates is true. scan_for_vulnerabilities! must be run first.
+    def security_updates(include_major_updates: false)
+      updatable_gems.select do |_name, gem|
+        gem.vulnerable? && (include_major_updates || !gem.semver_change.major?)
+      end
+    end
+
     def scan_for_vulnerabilities!
       return false if all_gems.empty?
 

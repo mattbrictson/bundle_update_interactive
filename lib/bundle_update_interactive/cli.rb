@@ -9,12 +9,13 @@ module BundleUpdateInteractive
       report, updater = generate_report(options)
 
       puts_legend_and_withheld_gems(report) unless report.empty?
-      puts("No gems to update.").then { return } if report.updatable_gems.empty?
+      updatable_gems = select_updatable_gems(report, options)
+      puts(no_gems_message(options)).then { return } if updatable_gems.empty?
 
-      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updatable_gems)
+      selected_gems = MultiSelect.prompt_for_gems_to_update(updatable_gems)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
-      puts "Updating the following gems."
+      puts "baem the Updating the following gems."
       puts Table.updatable(selected_gems).render
       puts
 
@@ -30,6 +31,18 @@ module BundleUpdateInteractive
     end
 
     private
+
+    def select_updatable_gems(report, options)
+      return report.updatable_gems unless options.only_security_updates?
+
+      report.security_updates(include_major_updates: options.with_major_update?)
+    end
+
+    def no_gems_message(options)
+      return "No gems to update." unless options.only_security_updates?
+
+      "No security updates to apply."
+    end
 
     def puts_gemfile_modified_notice
       puts BundleUpdateInteractive.pastel.yellow("Your Gemfile was changed to accommodate the latest gem versions.")
