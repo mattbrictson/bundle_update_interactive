@@ -17,4 +17,4 @@ module BundlerAuditTestHelpers
   end
 end
 
-Minitest::Test.include(BundlerAuditTestHelpers)
+BundleUpdateInteractive::Test.include(BundlerAuditTestHelpers)

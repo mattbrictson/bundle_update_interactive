@@ -6,7 +6,7 @@ require "tty/prompt/test"
 module CaptureIOHelpers
   private
 
-  # Patch Minitest's capture_io to make it compatible with TTY::Prompt
+  # Patch Megatest's capture_io to make it compatible with TTY::Prompt
   def capture_io
     super do
       $stdout.extend(TTY::Prompt::StringIOExtensions) if $stdout.is_a?(StringIO)
@@ -37,4 +37,4 @@ module CaptureIOHelpers
   end
 end
 
-Minitest::Test.prepend(CaptureIOHelpers)
+BundleUpdateInteractive::Test.prepend CaptureIOHelpers

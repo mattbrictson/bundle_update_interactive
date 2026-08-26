@@ -4,7 +4,7 @@ require "factory_bot"
 
 FactoryBot.find_definitions
 
-module Minitest
+module BundleUpdateInteractive
   class Test
     include FactoryBot::Syntax::Methods
   end

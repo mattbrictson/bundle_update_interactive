@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
   module Latest
-    class GemRequirementTest < Minitest::Test
+    class GemRequirementTest < Test
       def test_relax_doesnt_affect_greater_than_equal_requirements
         assert_equal(">= 1.0.1", parse(">= 1.0.1").relax.to_s)
       end

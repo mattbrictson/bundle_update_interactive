@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class SemverChangeTest < Minitest::Test
+  class SemverChangeTest < Test
     def test_prerelease_is_considered_patch
       change = SemverChange.new("7.2.0.beta2", "7.2.0.beta3")
 

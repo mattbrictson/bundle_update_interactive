@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
   class CLI
-    class OptionsTest < Minitest::Test
+    class OptionsTest < Test
       def test_prints_help_and_exits_when_given_dash_h
         stdout, _stderr, status = capture_io_and_exit_status do
           Options.parse(%w[-h])

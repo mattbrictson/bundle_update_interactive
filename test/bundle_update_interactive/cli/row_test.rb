@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
   class CLI
-    class RowTest < Minitest::Test
+    class RowTest < Test
       def test_formatted_gem_name_for_vulnerable_gem_is_red_on_white
         outdated_gem = build(:outdated_gem, name: "rails", vulnerable: true)
         row = Row.new(outdated_gem)

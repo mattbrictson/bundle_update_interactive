@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "bundler"
 
 module BundleUpdateInteractive
   module Latest
-    class UpdaterTest < Minitest::Test
+    class UpdaterTest < Test
       def test_generate_report_doesnt_run_bundle_outdated_and_always_returns_no_withheld_gems
         Dir.chdir(File.expand_path("../../fixtures", __dir__)) do
           updated_lockfile = File.read("Gemfile.lock.updated")
