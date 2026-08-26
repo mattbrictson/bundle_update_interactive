@@ -117,14 +117,6 @@ module BundleUpdateInteractive
       end
     end
 
-    def within_fixture_copy(fixture, &block)
-      fixture_path = File.join(File.expand_path("../fixtures", __dir__), fixture)
-      Dir.mktmpdir do |tmp|
-        FileUtils.cp_r(fixture_path, tmp)
-        Dir.chdir(File.join(tmp, File.basename(fixture_path)), &block)
-      end
-    end
-
     def fetch_latest_gem_version_from_rubygems_api(name)
       WebMock.allow_net_connect!
       VCR.turned_off do
