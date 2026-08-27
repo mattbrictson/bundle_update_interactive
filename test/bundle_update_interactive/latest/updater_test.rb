@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "bundler"
 
 module BundleUpdateInteractive
   module Latest
-    class UpdaterTest < Minitest::Test
+    class UpdaterTest < Test
       def test_generate_report_doesnt_run_bundle_outdated_and_always_returns_no_withheld_gems
-        Dir.chdir(File.expand_path("../../fixtures", __dir__)) do
+        within_fixture_copy do
           updated_lockfile = File.read("Gemfile.lock.updated")
           BundlerCommands.expects(:read_updated_lockfile).with.returns(updated_lockfile)
           BundlerCommands.expects(:parse_outdated).never
@@ -19,7 +18,7 @@ module BundleUpdateInteractive
       end
 
       def test_generate_report_relaxes_gemfile_and_restores_it
-        Dir.chdir(File.expand_path("../../fixtures", __dir__)) do
+        within_fixture_copy do
           updatable_gems = { "sqlite3" => build(:outdated_gem, name: "sqlite3") }
           editor = GemfileEditor.new
           editor.expects(:with_relaxed_gemfile).returns(updatable_gems)

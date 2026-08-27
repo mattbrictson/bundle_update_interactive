@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "bundler"
 require "bundler/audit"
 require "bundler/audit/scanner"
 
 module BundleUpdateInteractive
-  class UpdaterTest < Minitest::Test
+  class UpdaterTest < Test
     def test_generates_a_report_of_updatable_gems_that_can_be_rendered_as_a_table
       VCR.use_cassette("changelog_requests") do
         Dir.chdir(File.expand_path("../fixtures", __dir__)) do

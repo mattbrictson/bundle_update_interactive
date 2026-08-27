@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class ChangelogLocatorTest < Minitest::Test
+  class ChangelogLocatorTest < Test
     def test_fetches_changelog_uri_from_rubygems
       VCR.use_cassette("changelog_requests") do
         uri = ChangelogLocator.new.find_changelog_uri(name: "nokogiri", version: "1.16.6")

@@ -232,6 +232,8 @@ Everyone interacting in this project’s codebases, issue trackers, chat rooms a
 
 Pull requests are welcome!
 
-To test your locally cloned version of `bundle update-interactive`, run `rake install`. This will install the gem and its executable so that you can try it out on other local projects.
+To test your locally cloned version of `bundle update-interactive`, run `bundle exec rake install`. This will install the gem and its executable so that you can try it out on other local projects.
 
-Before submitting a PR, make sure to run `rake` to see if there are any RuboCop or test failures.
+Run `bundle exec rake` to run all tests and RuboCop checks. Please do this before opening a PR.
+
+To run a specific test, use `bin/megatest <TEST>`.

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class LockfileTest < Minitest::Test
+  class LockfileTest < Test
     def test_parses_a_lockfile_into_entries_by_name
       lockfile = Lockfile.parse(File.read(File.expand_path("../fixtures/Gemfile.lock", __dir__)))
 

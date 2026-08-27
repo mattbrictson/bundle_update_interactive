@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "fileutils"
 require "tmpdir"
 
 module BundleUpdateInteractive
   module Latest
-    class GemfileEditorTest < Minitest::Test
+    class GemfileEditorTest < Test
       def setup
         @original_dir = Dir.pwd
         @temp_dir = Dir.mktmpdir

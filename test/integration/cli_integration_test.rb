@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "json"
 require "open3"
 require "tmpdir"
 
 module BundleUpdateInteractive
-  class CLIIntegrationIest < Minitest::Test
+  class CLIIntegrationIest < Test
     def test_updates_lock_file_based_on_selected_gem_while_honoring_gemfile_requirement
       out, _gemfile, lockfile = within_fixture_copy("integration") do
         run_bundle_update_interactive(argv: [], key_presses: "j \n")
@@ -115,14 +114,6 @@ module BundleUpdateInteractive
         raise "Command failed: #{[out, err].join}" unless status.success?
 
         [out, File.read("Gemfile"), File.read("Gemfile.lock")]
-      end
-    end
-
-    def within_fixture_copy(fixture, &block)
-      fixture_path = File.join(File.expand_path("../fixtures", __dir__), fixture)
-      Dir.mktmpdir do |tmp|
-        FileUtils.cp_r(fixture_path, tmp)
-        Dir.chdir(File.join(tmp, File.basename(fixture_path)), &block)
       end
     end
 

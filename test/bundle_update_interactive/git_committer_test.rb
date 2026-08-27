@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class GitCommitterTest < Minitest::Test
+  class GitCommitterTest < Test
     def setup
       @git_committer = GitCommitter.new(nil)
     end

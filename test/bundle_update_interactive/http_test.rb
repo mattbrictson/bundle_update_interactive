@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "openssl"
 require "net/http"
 
 module BundleUpdateInteractive
-  class HttpTest < Minitest::Test
+  class HttpTest < Test
     def test_gracefully_handles_openssl_error
       Net::HTTP.stubs(:start).raises(OpenSSL::SSL::SSLError)
 

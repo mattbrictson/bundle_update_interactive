@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class OutdatedGemTest < Minitest::Test
+  class OutdatedGemTest < Test
     def test_changelog_uri_delegates_to_changelog_locator_for_rubygems_source
       changelog_locator = mock
       ChangelogLocator.expects(:new).returns(changelog_locator)

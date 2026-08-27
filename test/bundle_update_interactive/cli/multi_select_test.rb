@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "launchy"
 require "tty/prompt/test"
 
 module BundleUpdateInteractive
   class CLI
-    class MultiSelectTest < Minitest::Test
+    class MultiSelectTest < Test
       ARROW_UP = "\e[A"
       ARROW_DOWN = "\e[B"
       CTRL_A = "\u0001"

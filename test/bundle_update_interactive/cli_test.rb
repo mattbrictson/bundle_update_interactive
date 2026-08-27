@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 module BundleUpdateInteractive
-  class CLIIest < Minitest::Test
+  class CLITest < Test
     def test_shows_help_and_exits
       stdout, stderr, status = capture_io_and_exit_status do
         CLI.new.run(argv: %w[--help])

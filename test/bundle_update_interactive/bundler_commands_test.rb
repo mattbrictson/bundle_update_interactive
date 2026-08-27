@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "bundler"
 
 module BundleUpdateInteractive
-  class BundlerCommandsTest < Minitest::Test
+  class BundlerCommandsTest < Test
     def setup
       Gem.stubs(:bin_path).with("bundler", "bundle", Bundler::VERSION).returns("/exe/bundle")
     end
