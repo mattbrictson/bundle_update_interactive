@@ -5,7 +5,7 @@ require "open3"
 require "tmpdir"
 
 module BundleUpdateInteractive
-  class CLIIntegrationIest < Test
+  class CLIIntegrationTest < Test
     def test_updates_lock_file_based_on_selected_gem_while_honoring_gemfile_requirement
       out, _gemfile, lockfile = within_fixture_copy("integration") do
         run_bundle_update_interactive(argv: [], key_presses: "j \n")
