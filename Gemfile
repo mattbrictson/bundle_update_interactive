@@ -16,7 +16,7 @@ gem "vcr", "~> 6.2"
 gem "webmock", "~> 3.23"
 
 if RUBY_VERSION >= "3.3"
-  gem "rubocop", "1.88.2"
+  gem "rubocop", "1.90.0"
   gem "rubocop-factory_bot", "2.28.0"
   gem "rubocop-packaging", "0.6.0"
   gem "rubocop-performance", "1.26.1"
