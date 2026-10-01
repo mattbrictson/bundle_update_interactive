@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift "/Users/zirni/dev/bundle_update_interactive/lib"
+puts $LOAD_PATH
+
 require "bundle_update_interactive"
+
 
 BundleUpdateInteractive::CLI.new.run
