@@ -19,6 +19,6 @@ if RUBY_VERSION >= "3.3"
   gem "rubocop", "1.90.0"
   gem "rubocop-factory_bot", "2.28.0"
   gem "rubocop-packaging", "0.6.0"
-  gem "rubocop-performance", "1.26.1"
+  gem "rubocop-performance", "1.27.0"
   gem "rubocop-rake", "0.7.1"
 end
