@@ -11,10 +11,12 @@ module BundleUpdateInteractive
                   :updated_version,
                   :updated_git_version
 
+    attr_accessor :advisories
     attr_writer :changelog_uri, :rubygems_source, :vulnerable
 
     def initialize(**attrs)
       @vulnerable = nil
+      @advisories = []
       @changelog_locator = ChangelogLocator.new
 
       attrs.each { |name, value| public_send(:"#{name}=", value) }

@@ -9,17 +9,19 @@ module BundleUpdateInteractive
       report, updater = generate_report(options)
 
       puts_legend_and_withheld_gems(report) unless report.empty?
-      puts("No gems to update.").then { return } if report.updatable_gems.empty?
+      updatable_gems = select_updatable_gems(report, options)
+      puts(no_gems_message(options)).then { return } if updatable_gems.empty?
 
-      selected_gems = MultiSelect.prompt_for_gems_to_update(report.updatable_gems)
+      selected_gems = select_gems_to_update(updatable_gems, options)
       puts("No gems to update.").then { return } if selected_gems.empty?
 
-      puts "Updating the following gems."
+      puts "baem the Updating the following gems."
       puts Table.updatable(selected_gems).render
       puts
 
       if options.commit?
-        GitCommitter.new(updater).apply_updates_as_individual_commits(*selected_gems.keys)
+        committer = GitCommitter.new(updater, advisories: advisories_for_commit(selected_gems, options))
+        committer.apply_updates_as_individual_commits(*selected_gems.keys)
       else
         updater.apply_updates(*selected_gems.keys)
       end
@@ -30,6 +32,30 @@ module BundleUpdateInteractive
     end
 
     private
+
+    def select_updatable_gems(report, options)
+      return report.updatable_gems unless options.only_security_updates?
+
+      report.security_updates(include_major_updates: options.with_major_update?)
+    end
+
+    def select_gems_to_update(updatable_gems, options)
+      return updatable_gems if options.auto_update?
+
+      MultiSelect.prompt_for_gems_to_update(updatable_gems)
+    end
+
+    def no_gems_message(options)
+      return "No gems to update." unless options.only_security_updates?
+
+      "No security updates to apply."
+    end
+
+    def advisories_for_commit(selected_gems, options)
+      return {} unless options.commit_bundle_audit_message?
+
+      selected_gems.transform_values(&:advisories)
+    end
 
     def puts_gemfile_modified_notice
       puts BundleUpdateInteractive.pastel.yellow("Your Gemfile was changed to accommodate the latest gem versions.")
